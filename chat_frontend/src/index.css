@@ -1,6 +1,57 @@
-body {
+::before,
+::after,
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
     font-family: system-ui, sans-serif;
 }
+
+a {
+    text-decoration: none;
+}
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Navbar */
+header {
+    padding: 1rem 0;
+    background: hsl(0, 0%, 10%);
+}
+
+.navbar-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-logo {
+    color: rgb(33, 171, 33);
+}
+
+.navbar-logo > h2 {
+    line-height: 1;
+    font-size: 1.8rem;
+}
+
+.navlinks {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navlink {
+    color: white;
+}
+
+/* End */

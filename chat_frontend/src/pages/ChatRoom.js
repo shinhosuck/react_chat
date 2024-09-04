@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 
 import React, { useEffect, useRef, useState } from "react";
+import Messages from "../components/Messages";
 
 function ChatRoom() {
     const [message, setMessage] = useState(null);
@@ -33,6 +34,7 @@ function ChatRoom() {
     }, [message]);
     return (
         <div>
+            <Messages />
             <form action="" onSubmit={handleSubmit}>
                 <input type="text" ref={messageRef} />
                 <button type="submit">Send</button>
