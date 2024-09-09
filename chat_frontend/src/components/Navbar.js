@@ -1,9 +1,20 @@
-/* eslint-disable no-unused-vars */
 
-import React from "react";
-import { NavLink, Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import { RootLayOutContext } from '../layouts/RootLayout'
 
-function Navbar() {
+
+function Navbar({setUser}) {
+    const { setUserAuth, userAuth } = useContext(RootLayOutContext)
+    const navigate = useNavigate()
+
+    function handleSignOut(event) {
+        event.preventDefault()
+        setUserAuth(null)
+        localStorage.removeItem('user')
+        navigate('/sign-in', {state:{message:'Successfully signed out.'}})
+    }
+
     return (
         <nav className="navbar-container">
             <Link to="." className="navbar-logo">
@@ -13,15 +24,20 @@ function Navbar() {
                 <NavLink className="navlink" to=".">
                     Home
                 </NavLink>
-                <NavLink className="navlink" to="">
-                    Sign in
-                </NavLink>
-                <NavLink className="navlink" to="">
-                    Sign out
-                </NavLink>
-                <NavLink className="navlink" to="">
-                    Register
-                </NavLink>
+                {userAuth ?
+                        <button type="button" onClick={handleSignOut} className="navlink sign-out-btn">
+                            Sign out
+                        </button>
+                    :
+                    <>
+                        <NavLink className="navlink" to="sign-in">
+                            Sign in
+                        </NavLink>
+                        <NavLink className="navlink" to="sign-up">
+                            Sign up
+                        </NavLink>
+                    </>
+                }
             </div>
         </nav>
     );

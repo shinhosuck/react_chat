@@ -8,7 +8,6 @@ const url = "http://127.0.0.1:8000/api/chat/rooms/";
 
 function ChatRooms() {
     const [rooms, setRooms] = useState(null);
-
     async function getChatRoomNames() {
         const data = await fetchChatRoomNames(url);
         setRooms(data);
@@ -25,7 +24,7 @@ function ChatRooms() {
                     rooms.map((room) => {
                         return (
                             <Link
-                                to={`:${room.name}`}
+                                to={`${room.name}`}
                                 key={room.id}
                                 className="chat-room"
                             >

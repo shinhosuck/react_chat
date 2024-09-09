@@ -1,20 +1,19 @@
-import React from "react";
+import { Link } from 'react-router-dom'
 
 function Home() {
-    function handleSubmit(params) {}
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input type="text" id="username" name="username" />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input type="password" id="password" name="password" />
-                </div>
-                <button>Sign in</button>
-            </form>
+        <div className="home-container">
+            <div className="hero-text-container">
+                <h1 className="hero-header">Welcome to DjangoChat</h1>
+                <p className="hero-text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Voluptatum molestiae alias, vel beatae porro sapiente
+                    veniam. Modi nam in, tenetur necessitatibus ex obcaecati rem
+                    voluptatum ad pariatur placeat vitae neque?
+                </p>
+                <Link to="sign-up" className="home-sign-up-btn">Sign up for DjagnoChat</Link>
+            </div>
+       
         </div>
     );
 }

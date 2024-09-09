@@ -7,7 +7,7 @@
 }
 
 body {
-    font-family: system-ui, sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 a {
@@ -17,6 +17,21 @@ a {
 input {
     width: 100%;
     box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+button {
+    font-family: "Roboto", sans-serif;
+}
+
+.error {
+    color: hsl(0, 100%, 64%);
+    padding: 0.2rem 0;
+}
+
+.message {
+    color: hsl(124, 100%, 33%);
+    padding: 0.2rem 0;
 }
 
 /* Navbar */
@@ -54,4 +69,220 @@ header {
     color: white;
 }
 
+.sign-out-btn {
+    background: none;
+    border: none;
+    font-size: 1rem;
+}
+
+/* End */
+
+/* Home */
+.home-container {
+    min-height: calc(100svh - 60.8px);
+    background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.9)
+        ),
+        url("./images/bg.webp");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    display: grid;
+    align-content: center;
+    align-items: start;
+    gap: 3.5rem;
+    padding: 3rem 0;
+}
+
+.hero-text-container {
+    width: 90%;
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+    display: grid;
+    align-content: start;
+    gap: 2rem;
+}
+
+.hero-header {
+    color: white;
+    font-size: 3.5rem;
+    text-wrap: pretty;
+    font-weight: bold;
+}
+
+.hero-text {
+    color: hsl(0, 0%, 90%);
+    font-size: 1.2rem;
+    letter-spacing: 0.05rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+}
+
+.home-sign-up-btn {
+    padding: 1rem 1.5rem;
+    background: rgb(0, 165, 0);
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
+    justify-self: center;
+}
+/* End */
+
+/* Sign up */
+.signup-form-container {
+    width: 90%;
+    max-width: 500px;
+    margin: 3rem auto;
+    display: grid;
+    align-content: start;
+    gap: 2rem;
+}
+
+.signup-form-header {
+    color: hsl(0, 0%, 15%);
+    text-align: center;
+    font-size: 2rem;
+}
+
+.signup-form {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 5px;
+    border: 1px solid hsl(0, 0%, 80%)
+}
+
+.signup-form-row {
+    display: grid;
+    align-self: start;
+    gap: 0.4rem;
+}
+
+.signup-form-label {
+    color: hsl(0, 0%, 15%);
+    font-weight: 500;
+    letter-spacing: 0.03rem;
+}
+
+.signup-form-input {
+    padding: 1rem;
+    border-radius: 5px;
+    outline: 1px solid hsl(0, 0%, 80%);
+    border: none;
+    font-size: 1rem;
+    letter-spacing: 0.03rem;
+}
+
+.signup-form-input:focus {
+    outline: 3px solid rgb(0, 224, 0);
+}
+
+.signup-submit-btn {
+    padding: 1rem;
+    border: none;
+    background: rgb(0, 190, 0);
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    letter-spacing: 0.03rem;
+}
+
+.signup-form-sign-up-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    color: hsl(0, 0%, 15%);
+    font-size: 1.1rem;
+}
+.signup-form-sign-up-btn > a {
+    color: rgb(0, 152, 0);
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* End */
+
+/* Sign in */
+.sign-in-container {
+    width: 90%;
+    max-width: 450px;
+    margin: 3rem auto;
+    display: grid;
+    align-content: start;
+    gap: 1.5rem;
+}
+
+.sign-in-form-header {
+    color: hsl(0, 0%, 15%)
+}
+
+.sign-in-form {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding: 1.2rem;
+    border-radius: 5px;
+    border: 1px solid hsl(0, 0%, 80%);
+}
+
+.sign-in-form-row {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+}
+
+.sign-in-form-label {
+    color: hsl(0, 0%, 15%);
+    font-weight: 500;
+    letter-spacing: 0.03rem;
+}
+
+.sign-in-form-input {
+    padding: 1rem;
+    border-radius: 5px;
+    outline: 1px solid hsl(0, 0%, 80%);
+    border: none;
+    font-size: 1rem;
+    letter-spacing: 0.03rem;
+}
+
+.sign-in-form-input:focus {
+    outline: 3px solid rgb(0, 224, 0);
+}
+
+.sign-in-form-sign-in {
+     padding: 1rem;
+    border: none;
+    background: rgb(0, 190, 0);
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    letter-spacing: 0.03rem;
+}
+
+.sign-in-form-sign-in-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    color: hsl(0, 0%, 15%);
+    font-size: 1.1rem;
+}
+
+.sign-in-form-sign-in-btn > a {
+    color: rgb(0, 152, 0);
+    font-weight: 500;
+    font-size: 1.1rem;
+}
 /* End */
