@@ -1,6 +1,21 @@
-import { Link } from 'react-router-dom'
+
+import React, { useContext, useEffect } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { RootLayOutContext } from '../layouts/RootLayout'
 
 function Home() {
+    const  { userAuth, setUserAuth } = useContext(RootLayOutContext)
+
+    useEffect(()=> {
+        document.title = "Home"
+    }, [])
+
+    if (userAuth) {
+        return (
+            <Navigate to='/chat-room' />
+        )
+    }
+
     return (
         <div className="home-container">
             <div className="hero-text-container">

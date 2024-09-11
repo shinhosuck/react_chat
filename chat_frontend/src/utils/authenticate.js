@@ -3,7 +3,7 @@ import { validateUsernameEmail, URL } from './api'
 
 const url = `${URL}/api/auth/validate/`
 
-export async function validateRegisterForm(user) {
+export async function validateAuthForm(type=null, user) {
     const passwordConfirmation = user.passwordConfirmation;
     const password = user.password 
 
@@ -24,16 +24,19 @@ export async function validateRegisterForm(user) {
             errors.emptyFields.push(key)
         }
     }
-    if (user.username) {
-        if (!is_valid) {
-            errors.invalidUserName = 'Invalid username.'
+
+    if (type === 'register') {
+        if (user.username) {
+            if (!is_valid) {
+                    errors.invalidUserName = 'Invalid username.'
+                }
         }
-    }
-    if (user.password && user.password.length < 8) {
-        errors.passwordTooShort = 'Password must be a least 8 characters.'
-    }
-    if (password && passwordConfirmation && password !== passwordConfirmation) {
-        errors.passwordMismatch = 'Passwords did not match.'
+        if (user.password && user.password.length < 8) {
+            errors.passwordTooShort = 'Password must be a least 8 characters.'
+        }
+        if (password && passwordConfirmation && password !== passwordConfirmation) {
+            errors.passwordMismatch = 'Passwords did not match.'
+        }
     }
 
     const errorObj = {}
@@ -51,14 +54,23 @@ export async function validateRegisterForm(user) {
         }
     }
 
-    if (!Object.keys(errorObj).length) {
-        const body = {username:user.username, email:user.email}
-        const data = await validateUsernameEmail(url, body)
-        if (data.user_exists) {
-            errorObj.user_exists = data.user_exists
+    if (type ==='register') {
+        const body = {}
+        for (const key in user) {
+            if (key === 'username' || key === 'email') {
+                if (user[key]) {
+                     body[key] = user[key]
+                }
+            }
+        }
+
+        if (Object.keys(body).length) {
+            const data = await validateUsernameEmail(url, body)
+            if (data.user_exists) {
+                errorObj.user_exists = data.user_exists
+            }
         }
     }
-
     return Object.keys(errorObj).length ? errorObj: {message:'valid'}
 }
     

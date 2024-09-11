@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { userRegister, URL } from "../utils/api";
-import { validateRegisterForm } from "../utils/authenticate";
+import { validateAuthForm } from "../utils/authenticate";
 
 const url = `${URL}/api/auth/register/`;
 
@@ -13,14 +13,14 @@ function Signup() {
         password: "",
         passwordConfirmation: "",
     });
-    const focusRef = useRef();
     const navigate = useNavigate();
+    const { state } = useLocation()
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const resp = await validateRegisterForm(user);
-        if (resp && resp.message === 'valid') {
-            setFormError(null)
+        const resp = await validateAuthForm('register', user);
+
+        if (resp?.message === 'valid') {
             const data = await userRegister(url, user);
             if (data.error) {
                 setFormError(data)
@@ -31,63 +31,84 @@ function Signup() {
                     password: "",
                     passwordConfirmation: "",
                 });
-                console.log(data.message)
+                setFormError(null)
                 navigate("/sign-in", { state: { message: data.message } });
             }
         }else {
-            setFormError(resp)
+           const id = setTimeout(() => {
+                setFormError(resp)
+                clearTimeout(id)
+           }, 100);
         }
     }
 
     function handleChange(event) {
+        const emptyFields = formError?.emptyFields
         const { name, value } = event.target;
+
+        if (emptyFields && emptyFields.includes(name)) {
+            const index = emptyFields.indexOf(name)
+            emptyFields.splice(index, 1)
+            if (!emptyFields.length) {
+                setFormError(null)
+            }
+        }
         setUser((prev) => ({ ...prev, [name]: value }));
     }
 
-    useEffect(() => {
-        focusRef.current.focus();
-    }, []);
+    useEffect(()=> {
+        document.title = 'Sign Up'
+    }, [state])
 
     return (
         <div className="signup-form-container">
+            {state?.message && <p className="message">{state.message}</p>}
+            {state?.error && <p className="error">{state.error}</p>}
             <h1 className="signup-form-header">Sign up for DjangoChat</h1>    
             <form className="signup-form" onSubmit={handleSubmit}>
                 <div className="signup-form-row">
                     <label className="signup-form-label" htmlFor="username">
                         Username
                     </label>
-                    {(formError ?.emptyFields ?.includes('username') && 
-                        <p className="error">This field can't be blank.</p>
-                    )}
-                    {(formError ?.invalidUserName && 
-                        <p className="error">{formError.invalidUserName}</p>
-                    )}
-                    {(formError ?.user_exists ?.user && 
-                        <p className="error">{formError.user_exists.user}</p>
-                    )}
-                    {(formError ?.username && 
-                        <p className="error">{formError.username}</p>
-                    )}
+                    <ul className="form-error">
+                        {(formError ?.emptyFields ?.includes('username') && 
+                            <li>This field can't be blank.</li>
+                        )}
+                        {(formError ?.invalidUserName && 
+                            <li>{formError.invalidUserName}</li>
+                        )}
+                         {(formError ?.user_exists ?.user && 
+                            <li>{formError.user_exists.user}</li>
+                        )}
+                        {(formError ?.username && 
+                            <li>{formError.username}</li>
+                        )}
+                    </ul>
                     <input
                         onChange={handleChange}
                         className="signup-form-input"
                         type="text"
                         id="username"
                         name="username"
-                        ref={focusRef}
                         value={user.username.replaceAll(' ', '').trim()}
+                        autoFocus={true}
                     />
+                    <ul className="helper-text">
+                        <li>Username may include letters, numbers, and a single hyphen or underscore.</li>
+                    </ul>
                 </div>
                 <div className="signup-form-row">
                     <label className="signup-form-label" htmlFor="email">
                         Email
                     </label>
-                    {(formError ?.emptyFields ?.includes('email')&& 
-                        <p className="error">This field can't be blank.</p>
-                    )}
-                    {(formError ?.user_exists ?.email && 
-                        <p className="error">{formError.user_exists.email}</p>
-                    )}
+                    <ul className="form-error">
+                        {(formError ?.emptyFields ?.includes('email')&& 
+                            <li>This field can't be blank.</li>
+                        )}
+                        {(formError ?.user_exists ?.email && 
+                            <li>{formError.user_exists.email}</li>
+                        )}
+                    </ul>
                     <input
                         onChange={handleChange}
                         className="signup-form-input"
@@ -96,20 +117,25 @@ function Signup() {
                         name="email"
                         value={user.email}
                     />
+                    <ul className="helper-text">
+                        <li>Please ensure that your email is valid, as it will be used for password resets, notifications, and other communications.</li>
+                    </ul>
                 </div>
                 <div className="signup-form-row">
                     <label className="signup-form-label" htmlFor="password">
                         Password
                     </label>
-                    {(formError ?.emptyFields ?.includes('password')&& 
-                        <p className="error">This field can't be blank.</p>
-                    )}
-                    {(formError ?.passwordTooShort && 
-                        <p className="error">{formError.passwordTooShort}</p>
-                    )}
-                    {(formError ?.passwordMismatch && 
-                        <p className="error">{formError.passwordMismatch}</p>
-                    )}
+                    <ul className="form-error">
+                        {(formError ?.emptyFields ?.includes('password')&& 
+                            <li>This field can't be blank.</li>
+                        )}
+                        {(formError ?.passwordTooShort && 
+                            <li>{formError.passwordTooShort}</li>
+                        )}
+                        {(formError ?.passwordMismatch && 
+                            <li>{formError.passwordMismatch}</li>
+                        )}
+                    </ul>
                     <input
                         onChange={handleChange}
                         className="signup-form-input"
@@ -118,6 +144,9 @@ function Signup() {
                         name="password"
                         value={user.password}
                     />
+                    <ul className="helper-text">
+                        <li>Password must be at least 8 characters in length.</li>
+                    </ul>
                 </div>
                 <div className="signup-form-row">
                     <label
@@ -126,9 +155,11 @@ function Signup() {
                     >
                         Password confirmation
                     </label>
-                    {(formError ?. emptyFields ?.includes('passwordConfirmation')&& 
-                        <p className="error">This field can't be blank.</p>
-                    )}
+                    <ul className="form-error">
+                         {(formError ?. emptyFields ?.includes('passwordConfirmation')&& 
+                            <li>This field can't be blank.</li>
+                        )}
+                    </ul>
                     <input
                         onChange={handleChange}
                         className="signup-form-input"
@@ -137,8 +168,15 @@ function Signup() {
                         name="passwordConfirmation"
                         value={user.passwordConfirmation}
                     />
+                    <ul className="helper-text">
+                        <li>Please re-enter the password you just provided</li>
+                    </ul>
                 </div>
-                <button className="signup-submit-btn" type="submit">
+                <button 
+                    className="signup-submit-btn" 
+                    type="submit" 
+                    disabled={formError?.emptyFields}
+                >
                     Sign up
                 </button>
                 <div className="signup-form-sign-up-btn">

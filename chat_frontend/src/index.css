@@ -22,59 +22,240 @@ input {
 
 button {
     font-family: "Roboto", sans-serif;
+    cursor: pointer;
+}
+
+.form-error {
+    color: hsl(0, 100%, 64%);
+    padding: 0.2rem 0;
+    margin: 0 1rem;
+    display: grid;
+    gap:0.3rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.03rem;
 }
 
 .error {
-    color: hsl(0, 100%, 64%);
-    padding: 0.2rem 0;
+    color: white;
+    letter-spacing: 0.04rem;
 }
 
 .message {
-    color: hsl(124, 100%, 33%);
-    padding: 0.2rem 0;
+    color: white;
+    letter-spacing: 0.04rem;
+}
+
+.error-row,
+.message-row {
+    position: absolute;
+    left: 0;
+    top: -100%;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 500ms linear;
+    background: rgb(226, 62, 40);
+}
+
+.message-row {
+   background: rgb(16, 114, 206); 
+}
+
+.show-error-row,
+.show-message-row {
+    top: 57.6px;
+    opacity: 1;
+}
+
+.message-container,
+.error-container {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    gap: 1rem;
+}
+
+.message-close-btn,
+.error-close-btn {
+    border: none;
+    color: hsl(0, 0%, 100%);
+    line-height: 1;
+    padding: 0.3rem;
+    background: none;
+    font-size: 1.3rem;
+}
+
+@media screen and (min-width:700px) {
+    .error-row,
+    .message-row {
+        top: 66.74px;
+        opacity: 1;
+    }
+
+    .message-container,
+    .error-container {
+        width: 50%;
+    }
 }
 
 /* Navbar */
 header {
-    padding: 1rem 0;
     background: hsl(0, 0%, 10%);
 }
 
-.navbar-container {
+.mobile-navbar-container {
     width: 90%;
-    max-width: 1000px;
     margin: 0 auto;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1rem 0;
 }
 
-.navbar-logo {
-    color: rgb(33, 171, 33);
+.mobile-navbar-logo {
+    color: #21ab21;
 }
 
-.navbar-logo > h2 {
+.mobile-navbar-logo > h2 {
     line-height: 1;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
-.navlinks {
+.mobile-navlinks-toggle-btns {
     display: flex;
     align-items: center;
-    gap: 1rem;
 }
 
-.navlink {
+.mobile-navlinks-toggle-btns > button {
+    border: none;
+    line-height: 1;
+    font-size: 1.4rem;
+    color: #ffffff;
+    background: none;
+}
+
+.mobile-navlinks {
+    position: absolute;
+    z-index: 100;
+    left: 0;
+    width: 100%;
+    top: -100%;
+    display: grid;
+    align-content: start;
+    gap: 2rem;
+    padding: 2rem 0;
+    opacity: 0;
+    background: hsl(0, 0%, 15%);
+    transition: opacity 100ms linear;
+}
+
+.show-mobile-navlinks {
+    top: 57.6px;
+    opacity: 1;
+}
+
+.mobile-nav-link {
     color: white;
+    text-align: center;
+    justify-self: center;
+    /* border: 1px solid white; */
+}
+
+.active-mobile-link {
+    color: rgb(38, 214, 38);
 }
 
 .sign-out-btn {
+    text-align: center;
     background: none;
     border: none;
+    color: white;
     font-size: 1rem;
+    justify-self: center;
+    /* border: 1px solid white; */
 }
 
+.mobile-sign-up-btn {
+    justify-self: center;
+    padding: 0.5rem 2rem;
+    border-radius: 5px;
+    border: 2px solid rgb(33, 171, 33);
+}
+
+.navbar-container {
+    display: none;
+}
+@media screen and (min-width: 700px) {
+    .mobile-navbar-container {
+        display: none;
+    }
+
+    .navbar-container {
+        width: 90%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 1rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        column-gap: 1rem;
+        row-gap: 0.5rem;
+    }
+
+    .navbar-logo {
+        color: rgb(33, 171, 33);
+    }
+
+    .navbar-logo > h2 {
+        line-height: 1;
+        font-size: 1.8rem;
+    }
+
+    .navlinks {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .navlink {
+        color: white;
+        transition: color 100ms linear;
+    }
+
+    .active-link {
+        color: rgb(38, 214, 38);
+    }
+
+    @media (hover) {
+        .navlink:hover {
+            color: rgb(38, 214, 38);
+        }
+    }
+
+    .sign-out-btn {
+        background: none;
+        border: none;
+        font-size: 1rem;
+    }
+
+    .sign-up-btn {
+        border: 2px solid rgb(33, 171, 33);
+        padding: 0.4rem 0.5rem;
+        border-radius: 5px;
+        transition: background 100ms linear;
+    }
+
+    @media (hover) {
+        .sign-up-btn:hover {
+            background: rgb(0, 114, 0);
+            color: white;
+        }
+    }
+}
 /* End */
 
 /* Home */
@@ -135,6 +316,7 @@ header {
 
 /* Sign up */
 .signup-form-container {
+    min-height: calc(100svh - 60.8px);
     width: 90%;
     max-width: 500px;
     margin: 3rem auto;
@@ -209,10 +391,19 @@ header {
     font-size: 1.1rem;
 }
 
+.helper-text {
+    margin: 0 1rem;
+    font-size: 0.9rem;
+    color: hsl(0, 0%, 25%);
+    letter-spacing: 0.03rem;
+
+}
+
 /* End */
 
 /* Sign in */
 .sign-in-container {
+    min-height: calc(100svh - 60.8px);
     width: 90%;
     max-width: 450px;
     margin: 3rem auto;
@@ -222,7 +413,8 @@ header {
 }
 
 .sign-in-form-header {
-    color: hsl(0, 0%, 15%)
+    color: hsl(0, 0%, 15%);
+    line-height: 1;
 }
 
 .sign-in-form {

@@ -10,8 +10,6 @@ export const RootLayOutContext = createContext()
 function RootLayout() {
     const [userAuth, setUserAuth] = useState(JSON.parse(localStorage.getItem('user'))||null)
 
-    console.log(setUserAuth)
-
     return (
         <RootLayOutContext.Provider value={{userAuth, setUserAuth}}>
             <header>
