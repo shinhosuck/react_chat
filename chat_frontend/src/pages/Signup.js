@@ -70,20 +70,22 @@ function Signup() {
                     <label className="signup-form-label" htmlFor="username">
                         Username
                     </label>
-                    <ul className="form-error">
-                        {(formError ?.emptyFields ?.includes('username') && 
-                            <li>This field can't be blank.</li>
-                        )}
-                        {(formError ?.invalidUserName && 
-                            <li>{formError.invalidUserName}</li>
-                        )}
-                         {(formError ?.user_exists ?.user && 
-                            <li>{formError.user_exists.user}</li>
-                        )}
-                        {(formError ?.username && 
-                            <li>{formError.username}</li>
-                        )}
-                    </ul>
+                    {formError &&
+                        <ul className="form-error">
+                            {(formError ?.emptyFields ?.includes('username') && 
+                                <li>This field can't be blank.</li>
+                            )}
+                            {(formError ?.invalidUserName && 
+                                <li>{formError.invalidUserName}</li>
+                            )}
+                            {(formError ?.user_exists ?.user && 
+                                <li>{formError.user_exists.user}</li>
+                            )}
+                            {(formError ?.username && 
+                                <li>{formError.username}</li>
+                            )}
+                        </ul>
+                    }
                     <input
                         onChange={handleChange}
                         className="signup-form-input"
@@ -101,14 +103,16 @@ function Signup() {
                     <label className="signup-form-label" htmlFor="email">
                         Email
                     </label>
-                    <ul className="form-error">
-                        {(formError ?.emptyFields ?.includes('email')&& 
-                            <li>This field can't be blank.</li>
-                        )}
-                        {(formError ?.user_exists ?.email && 
-                            <li>{formError.user_exists.email}</li>
-                        )}
-                    </ul>
+                    {formError &&
+                        <ul className="form-error">
+                            {(formError ?.emptyFields ?.includes('email')&& 
+                                <li>This field can't be blank.</li>
+                            )}
+                            {(formError ?.user_exists ?.email && 
+                                <li>{formError.user_exists.email}</li>
+                            )}
+                        </ul>
+                    }
                     <input
                         onChange={handleChange}
                         className="signup-form-input"
@@ -118,24 +122,26 @@ function Signup() {
                         value={user.email}
                     />
                     <ul className="helper-text">
-                        <li>Please ensure that your email is valid, as it will be used for password resets, notifications, and other communications.</li>
+                        <li>Ensure that your email is valid, as it will be used for password resets, notifications, and other communications.</li>
                     </ul>
                 </div>
                 <div className="signup-form-row">
                     <label className="signup-form-label" htmlFor="password">
                         Password
                     </label>
-                    <ul className="form-error">
-                        {(formError ?.emptyFields ?.includes('password')&& 
-                            <li>This field can't be blank.</li>
-                        )}
-                        {(formError ?.passwordTooShort && 
-                            <li>{formError.passwordTooShort}</li>
-                        )}
-                        {(formError ?.passwordMismatch && 
-                            <li>{formError.passwordMismatch}</li>
-                        )}
-                    </ul>
+                    {formError &&
+                        <ul className="form-error">
+                            {(formError ?.emptyFields ?.includes('password')&& 
+                                <li>This field can't be blank.</li>
+                            )}
+                            {(formError ?.passwordTooShort && 
+                                <li>{formError.passwordTooShort}</li>
+                            )}
+                            {(formError ?.passwordMismatch && 
+                                <li>{formError.passwordMismatch}</li>
+                            )}
+                        </ul>
+                    }
                     <input
                         onChange={handleChange}
                         className="signup-form-input"
@@ -155,11 +161,13 @@ function Signup() {
                     >
                         Password confirmation
                     </label>
-                    <ul className="form-error">
-                         {(formError ?. emptyFields ?.includes('passwordConfirmation')&& 
-                            <li>This field can't be blank.</li>
-                        )}
-                    </ul>
+                    {formError &&
+                        <ul className="form-error">
+                            {(formError ?. emptyFields ?.includes('passwordConfirmation')&& 
+                                <li>This field can't be blank.</li>
+                            )}
+                        </ul>
+                    }
                     <input
                         onChange={handleChange}
                         className="signup-form-input"
@@ -169,7 +177,7 @@ function Signup() {
                         value={user.passwordConfirmation}
                     />
                     <ul className="helper-text">
-                        <li>Please re-enter the password you just provided</li>
+                        <li>Re-enter the password you just provided</li>
                     </ul>
                 </div>
                 <button 

@@ -16,7 +16,7 @@ function RootLayout() {
                 <Navbar/>
             </header>
             <main>
-                <Outlet context={{userAuth, setUserAuth}}/>
+                <Outlet/>
             </main>
             <footer>
 

@@ -1,7 +1,7 @@
-
 import React, { useContext, useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { RootLayOutContext } from '../layouts/RootLayout'
+
 
 function Home() {
     const  { userAuth, setUserAuth } = useContext(RootLayOutContext)
