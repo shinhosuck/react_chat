@@ -3,7 +3,7 @@ import { useOutletContext, Link } from 'react-router-dom'
 import avatar from '../images/avatar.png'
 
 function ChatHistory() {
-  const { chatType, setChatType } = useOutletContext()
+  const { setChatType } = useOutletContext()
   return (
     <div className="chat-history-container">
         <div className="chat-history">

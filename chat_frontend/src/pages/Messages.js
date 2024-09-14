@@ -14,9 +14,6 @@ function Messages() {
     const messageRef = useRef()
     const { state } = useLocation()
 
-    // console.log(state)
-    // console.log(useParams())
-
     function handleSubmit(event) {
         event.preventDefault();
         const newMessage = messageRef.current.value;
@@ -40,8 +37,6 @@ function Messages() {
             <h1>Loading...</h1>
         )
     }
-
-    console.log(state)
 
     return (
         <div className="chat-box">
