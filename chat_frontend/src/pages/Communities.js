@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchChatRoomNames } from "../utils/api";
+import { URL } from "../utils/api"
 
-const url = "http://127.0.0.1:8000/api/chat/rooms/";
+const url = `${URL}/api/chat/rooms/`;
 
-function ChatRooms() {
+function Communities() {
     const [rooms, setRooms] = useState(null);
     async function getChatRoomNames() {
         const data = await fetchChatRoomNames(url);
@@ -17,24 +16,24 @@ function ChatRooms() {
         getChatRoomNames();
     }, []);
     return (
-        <div className="chat-rooms-container">
-            <h1>Chat Rooms</h1>
-            <div className="chat-rooms">
+        <div className="communities-container">
+            <div className="communities">
                 {rooms &&
                     rooms.map((room) => {
                         return (
                             <Link
-                                to={`${room.name}`}
+                                state={{type:'community',name:room.name}}
+                                to={`../${room.name}/messages`}
                                 key={room.id}
-                                className="chat-room"
+                                className='community-link'
                             >
                                 {room.name}
                             </Link>
                         );
                     })}
+                   
             </div>
         </div>
     );
 }
-
-export default ChatRooms;
+export default Communities;

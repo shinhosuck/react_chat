@@ -27,7 +27,7 @@ function Signin() {
             }else {
                 setUserAuth(data)
                 window.localStorage.setItem('user', JSON.stringify(data))
-                navigate('/chat-room', {state:{message:data.message}})
+                navigate('/chat-room', {replace:true, state:{message:data.message}})
             }
         }
         else {
@@ -62,7 +62,7 @@ function Signin() {
         setIsLoading(false)
         document.title = 'Sign In'
         window.history.replaceState(
-            {state: null}, '', 'sign-in'
+            {state: null}, '', '/sign-in'
         )
     }, [])
 
@@ -80,7 +80,7 @@ function Signin() {
         return (
             <Navigate 
                 to='/chat-room' 
-                replace={true} state={{'error':'You are signed in already.'}} 
+                replace={true} state={{error:'You are signed in already.'}} 
             />
         )
     }
