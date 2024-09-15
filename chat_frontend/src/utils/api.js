@@ -1,5 +1,6 @@
 
-export const URL = window.location.host === 'localhost:3000' ? 'http://127.0.0.1:8000' : null
+// export const URL = window.location.host === 'localhost:3000' ? 'http://127.0.0.1:8000' : null
+export const URL = "http://127.0.0.1:8000"
 export const wsURL = "ws://127.0.0.1:8000";
 
 export async function fetchChatRoomNames(url) {

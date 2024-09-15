@@ -10,7 +10,7 @@ function ChatHistory() {
             <Link 
               state={{type:'user',user:'James'}}
               className="chat-history-link" 
-              to="james/messages" 
+              to="../message/james" 
               onClick={()=>setChatType({type:'user',user:'James'})}
             >
               <div className="chat-history-profile-img-container">

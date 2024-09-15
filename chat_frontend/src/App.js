@@ -17,6 +17,7 @@ import People from "./pages/People"
 import Communities from "./pages/Communities"
 import Messages from "./pages/Messages"
 
+
 const routes = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<RootLayout />}>
@@ -25,8 +26,8 @@ const routes = createBrowserRouter(
                 <Route index element={<ChatHistory />} />
                 <Route path='people' element={<People />} />
                 <Route path="communities" element={<Communities />}/>
-                <Route path=":name/messages" element={<Messages />} />
             </Route>
+            <Route path="message/:name" element={<Messages />} />
             <Route path="sign-up" element={<Signup />} />
             <Route path="sign-in" element={<Signin />} />
         </Route>

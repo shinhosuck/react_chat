@@ -10,7 +10,7 @@ function Messages() {
     const [messages, setMessages] = useState(null);
     const [isLoading, setIsLoading] = useState(true)
     const { userAuth, setUserAuth } = useContext(RootLayOutContext)
-    const {setChatType, setChatMessage} = useOutletContext()
+    // const {setChatType, setChatMessage} = useOutletContext()
     const messageRef = useRef()
     const { state } = useLocation()
 
@@ -18,7 +18,7 @@ function Messages() {
         event.preventDefault();
         const newMessage = messageRef.current.value;
         const message = newMessage && {message:newMessage}
-        message && setChatMessage(message);
+        // message && setChatMessage(message);
     }
 
     async function getMessagesData() {
@@ -29,7 +29,7 @@ function Messages() {
 
     useEffect(() => {
         getMessagesData();
-        state?.type && setChatType(state);
+        // state?.type && setChatType(state);
     }, []);
 
     if (isLoading) {
