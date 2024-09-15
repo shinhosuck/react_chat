@@ -20,7 +20,9 @@ function ChatRoom() {
     const [chatType, setChatType] = useState(null)
     const { state, pathname } = useLocation()
 
-    
+
+    console.log(chatType)
+
     function handleWebSocket() {
         const params = `?user=${userAuth?.user}&token=${userAuth?.token}`
         const URL = `${wsURL}/ws/chat/room/${chatRoomName}/${params}`;
@@ -154,7 +156,7 @@ function ChatRoom() {
                     </NavLink>
                     
                 </div>
-                <Outlet context={{setChatType, setChatMessage}}/>
+                <Outlet context={{}}/>
             </div>
         </div>
     );

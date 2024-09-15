@@ -27,7 +27,7 @@ const routes = createBrowserRouter(
                 <Route path='people' element={<People />} />
                 <Route path="communities" element={<Communities />}/>
             </Route>
-            <Route path="message/:name" element={<Messages />} />
+            <Route path="chatting/:str/:str" element={<Messages />} />
             <Route path="sign-up" element={<Signup />} />
             <Route path="sign-in" element={<Signin />} />
         </Route>

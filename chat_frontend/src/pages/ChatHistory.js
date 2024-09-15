@@ -1,17 +1,18 @@
 import React from 'react'
-import { useOutletContext, Link } from 'react-router-dom'
+import { useOutletContext, Link, useLocation } from 'react-router-dom'
 import avatar from '../images/avatar.png'
 
 function ChatHistory() {
-  const { setChatType } = useOutletContext()
+  const { pathname } = useLocation()
+
+
   return (
     <div className="chat-history-container">
         <div className="chat-history">
             <Link 
-              state={{type:'user',user:'James'}}
+              state={{redirect:'chats',user:'James', redirectPath:pathname}}
               className="chat-history-link" 
-              to="../message/james" 
-              onClick={()=>setChatType({type:'user',user:'James'})}
+              to="../chatting/with/james" 
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -22,10 +23,9 @@ function ChatHistory() {
               </div>
             </Link>
             <Link
-              state={{type:'user',user:'greg'}}
+              state={{redirect:'chats',user:'greg',redirectPath:pathname}}
               className="chat-history-link" 
-              to="greg/messages" 
-              onClick={()=>setChatType({type:'user',user:'Greg'})}
+              to="../chatting/with/greg" 
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -39,7 +39,6 @@ function ChatHistory() {
               state={{type:'user',user:'dan'}}
               className="chat-history-link" 
               to="dan/messages" 
-              onClick={()=>setChatType({type:'user',user:'Dan'})}
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -53,7 +52,6 @@ function ChatHistory() {
               state={{type:'user',user:'matt'}}
               className="chat-history-link" 
               to="matt/messages" 
-              onClick={()=>setChatType({type:'user',user:'Matt'})}
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -67,7 +65,6 @@ function ChatHistory() {
               state={{type:'user',user:'smith'}}
               className="chat-history-link" 
               to="smith/messages" 
-              onClick={()=>setChatType({type:'user',user:'Smith'})}
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -81,7 +78,6 @@ function ChatHistory() {
               state={{type:'user',user:'olson'}}
               className="chat-history-link" 
               to="olson/messages" 
-              onClick={()=>setChatType({type:'user',user:'Olson'})}
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -95,7 +91,6 @@ function ChatHistory() {
               state={{type:'user',user:'julio'}}
               className="chat-history-link" 
               to="julio/messages" 
-              onClick={()=>setChatType({type:'user',user:'Julio'})}
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -109,7 +104,6 @@ function ChatHistory() {
               state={{type:'user',user:'muhamit'}}
               className="chat-history-link" 
               to="muhamit/messages" 
-              onClick={()=>setChatType({type:'user',user:'Muhamit'})}
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -123,7 +117,6 @@ function ChatHistory() {
               state={{type:'user',user:'jackson'}}
               className="chat-history-link" 
               to="jackson/messages" 
-              onClick={()=>setChatType({type:'user',user:'Jackson'})}
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
@@ -137,7 +130,6 @@ function ChatHistory() {
               state={{type:'user',user:'bobby'}}
               className="chat-history-link" 
               to="bobby/messages" 
-              onClick={()=>setChatType({type:'user',user:'Bobby'})}
             >
               <div className="chat-history-profile-img-container">
                 <img src={avatar} alt="" />
