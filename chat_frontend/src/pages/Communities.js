@@ -24,12 +24,21 @@ function Communities() {
                     rooms.map((room) => {
                         return (
                             <Link
-                                state={{redirect:'communities',name:room.name, redirectPath:pathname}}
+                                state={{
+                                    redirect:'Communities',
+                                    name:room.name, 
+                                    redirectPath:pathname,
+                                    messages: room.messages
+                                }}
                                 to={`../../chatting/in/${room.name}`}
                                 key={room.id}
-                                className='community-link'
+                                className={state?.name === room.name &&
+                                    'community-link active-chat-room' ||
+                                    'community-link'
+                                }
                             >
-                                {room.name}
+                                <span>{room.name}</span>
+                                <span>10 users</span>
                             </Link>
                         );
                     })}

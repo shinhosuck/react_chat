@@ -8,51 +8,44 @@ import {
 } from "react-router-dom";
 import { RootLayOutContext } from "../layouts/RootLayout"
 import { wsURL } from "../utils/api"
-import { createMessageElement } from "../utils/createElement"
-
 
 function ChatRoom() {
-    const [chatMessage, setChatMessage] = useState({id:'',message:''});
     const [errorOrMessage, setErrorOrMessage] = useState(null)
     const { userAuth } = useContext(RootLayOutContext)
     const [height, setHeight] = useState(window.innerHeight)
     const [chatRoomName, setChatRoomName] = useState('public')
-    const [chatType, setChatType] = useState(null)
     const { state, pathname } = useLocation()
 
+    // function handleWebSocket() {
+    //     const params = `?user=${userAuth?.user}&token=${userAuth?.token}`
+    //     const URL = `${wsURL}/ws/chat/room/${chatRoomName}/${params}`;
+    //     const ws = new WebSocket(URL);
 
-    console.log(chatType)
+    //     ws.addEventListener("open", (event) => {
+    //         console.log("Websocket connection established.");
+    //         ws.send(JSON.stringify(chatMessage));
+    //     });
 
-    function handleWebSocket() {
-        const params = `?user=${userAuth?.user}&token=${userAuth?.token}`
-        const URL = `${wsURL}/ws/chat/room/${chatRoomName}/${params}`;
-        const ws = new WebSocket(URL);
+    //     ws.addEventListener("message", (event) => {
+    //         const data = JSON.parse(event.data);
+    //         if (data?.message) {
+    //            createMessageElement(data)
+    //            console.log(data)
+    //         }
+    //         else if (data.error) {
+    //             console.log(data.error)
+    //         }
+    //     });
 
-        ws.addEventListener("open", (event) => {
-            console.log("Websocket connection established.");
-            ws.send(JSON.stringify(chatMessage));
-        });
+    //     ws.addEventListener("close", (event)=> {
+    //         console.log("WebSocket connection closed");
+    //         console.log(event)
+    //     })
 
-        ws.addEventListener("message", (event) => {
-            const data = JSON.parse(event.data);
-            if (data?.message) {
-               createMessageElement(data)
-               console.log(data)
-            }
-            else if (data.error) {
-                console.log(data.error)
-            }
-        });
-
-        ws.addEventListener("close", (event)=> {
-            console.log("WebSocket connection closed");
-            console.log(event)
-        })
-
-        ws.addEventListener("error", (event)=> {
-            console.error("WebSocket error:", event.error);
-        })
-    }
+    //     ws.addEventListener("error", (event)=> {
+    //         console.error("WebSocket error:", event.error);
+    //     })
+    // }
 
     function setWindowHeight(params) {
         const windowHeight = window.innerHeight
@@ -65,10 +58,6 @@ function ChatRoom() {
         window.addEventListener('resize', setWindowHeight)
         return () => window.removeEventListener('resize', setWindowHeight)
     }, [height])
-
-    useEffect(() => {
-        handleWebSocket();
-    }, [chatMessage]);
 
     useEffect(()=> {
         if (state) {
@@ -118,14 +107,7 @@ function ChatRoom() {
                 </div>
             }
             <div className="chat-room-container">
-                <div className="chat-room-icons-row" style={chatType?{rowGap:'1.5rem'}:{rowGap:'0'}}>
-                    <div className='chat-room-chat-room-type' style={chatType?{marginTop:'0'}:{background:'transparent'}}>
-                        {(chatType?.name &&
-                            <><span>Chatting in </span> <span>{chatType.name}</span></>)||
-                            (chatType?.user &&
-                            <><span>Chatting with</span> <span>{chatType.user}</span></>)
-                        }
-                    </div> 
+                <div className="chat-room-icons-row">
                     <NavLink
                         to="." 
                         end={true}
