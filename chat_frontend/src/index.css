@@ -635,6 +635,7 @@ header {
     padding: 2rem;
     max-height: calc(100svh - 225.38px);
     overflow-y: auto;
+
 }
 
 .chat-message:first-child {

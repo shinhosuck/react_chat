@@ -1,70 +1,56 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useContext, useState, useEffect } from 'react'
+import { Link, useLocation} from 'react-router-dom'
+import { URL, getUsers } from '../utils/api'
+import { RootLayOutContext } from '../layouts/RootLayout'
 
 function People() {
+    const [ isLoading, setIsLoading ] = useState(true)
+    const [ users, setUsers ] = useState(null)
     const { pathname, state } = useLocation()
+    const { userAuth } = useContext(RootLayOutContext)
+    
+    useEffect(()=> {
+        async function fetchUsers() {
+            const url = `${URL}/api/auth/users/`
+            const token = userAuth.token
+            const data = await getUsers(url, token)
+            setUsers(data)
+            setIsLoading(false)
+        }
+        fetchUsers()
+    }, [])
 
-    // console.log(state)
+    if (isLoading) {
+        return (
+            <div
+                className='chat-message-container'
+                style={{textAlign:'center',color:'white'}}
+            >
+                <h1>Loading...</h1>
+            </div>
+        )
+    }
 
     return (
         <div className='people-container'>
-            <Link
-                className={state?.user && 
-                    state.user === 'jack' && 
-                    'people-link active-chat-room' || 
-                    'people-link'}
-                to='../../chatting/with/jack'
-                state={{redirect:'People', user:'jack', redirectPath:pathname}}
-            >
-                <span>Jack</span>
-                <span>online</span>
-            </Link>
-            <Link
-                className={state?.user && 
-                    state.user === 'smith' && 
-                    'people-link active-chat-room' || 
-                    'people-link'}
-                to='../../chatting/with/smith'
-                state={{redirect:'People', user:'smith', redirectPath:pathname}}
-            >
-                <span>Smith</span>
-                <span>online</span>
-            </Link>
-            <Link
-                className={state?.user && 
-                    state.user === 'greg' && 
-                    'people-link active-chat-room' || 
-                    'people-link'}
-                to='../../chatting/with/greg'
-                state={{redirect:'People', user:'greg', redirectPath:pathname}}
-            >
-                <span>Greg</span>
-                <span>online</span>
-            </Link>
-            <Link
-                className={state?.user && 
-                    state.user === 'matt' && 
-                    'people-link active-chat-room' || 
-                    'people-link'}
-                to='../../chatting/with/matt'
-                state={{redirect:'People', user:'matt', redirectPath:pathname}}
-            >
-                <span>Matt</span>
-                <span>online</span>
-            </Link>
-            <Link
-                className={state?.user && 
-                    state.user === 'dave' && 
-                    'people-link active-chat-room' || 
-                    'people-link'}
-                to='../../chatting/with/dave'
-                state={{redirect:'People', user:'dave', redirectPath:pathname}}
-            >
-                <span>Dave</span>
-                <span>online</span>
-            </Link>
+            {users?.map((person)=> {
+                return (
+                    <Link
+                        key={person.id}
+                        className={state?.user && state.user === person.user ?
+                            'people-link active-chat-room' : 
+                            'people-link'}
+                        to={`../../chatting/with/${person.user}`}
+                        state = {{redirect:'People', user:person.user, redirectPath:pathname}}
+                    >
+                        <span>{person.user}</span>
+                        <span>online</span>
+                    </Link>
+                )
+            })}
         </div>
     )
 }
 export default People
 
+ 

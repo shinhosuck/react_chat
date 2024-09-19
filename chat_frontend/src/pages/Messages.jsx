@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import {Link, useLocation, useParams, useOutletContext } from 'react-router-dom'
-import { fetchMessages, URL } from "../utils/api";
+import {Link, useLocation, useParams, useOutletContext, Navigate } from 'react-router-dom'
+import { fetchCommunityMessages, URL } from "../utils/api";
 import {  RootLayOutContext } from "../layouts/RootLayout"
 import avatar from '../images/avatar.png'
 import { formatDate } from '../utils/formatDate'
@@ -10,9 +10,8 @@ import { createMessageElement } from "../utils/createElement"
 const url = `${URL}/api/messages/`
 
 function Messages() {
-    const [newMessage, setNewMessage] = useState({
-        message:'', roomName:'', user:''
-    });
+    const [newMessage, setNewMessage] = useState(null);
+    const [responseMessage, setResponseMessage] = useState(null)
     const [messages, setMessages] = useState(null);
     const [isLoading, setIsLoading] = useState(true)
     const { userAuth, setUserAuth } = useContext(RootLayOutContext)
@@ -23,20 +22,21 @@ function Messages() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        const chatRoomOrUser = state?.name && {roomName:state.name} || 
+        const communityOrUser = state?.community && {community:state.community} || 
             state?.user && {user:state.user}
         const value = messageRef.current.value;
         const message = value && {message:value}
-        setNewMessage({...message, ...chatRoomOrUser})
+        message && setNewMessage({...message, ...communityOrUser})
+        event.target.reset()
     }
 
     function handleWebSocket() {
         const params = `?user=${userAuth?.user}&token=${userAuth?.token}`
-        const URL = state?.name && `${wsURL}/ws/chat/room/${state?.name && state.name}/${params}` ||
-                    state?.user && `${wsURL}/ws/chat/user/${state?.name && state.user}/${params}`;
+        const URL = state?.community && `${wsURL}/ws/chat/room/${state?.community && state.community}/${params}` ||
+                    state?.user && `${wsURL}/ws/chat/user/${state?.user && state.user}/${params}`;
         const ws = new WebSocket(URL);
-
-        ws.addEventListener("open", (event) => {
+      
+        newMessage && ws.addEventListener("open", (event) => {
             console.log("Websocket connection established.");
             ws.send(JSON.stringify(newMessage));
         });
@@ -45,32 +45,50 @@ function Messages() {
             const data = JSON.parse(event.data);
             console.log(data)
             if (data?.message) {
-               createMessageElement(data)
-               console.log(data)
+                setResponseMessage(data)
             }
             else if (data.error) {
+                // log the user out
                 console.log(data.error)
             }
         });
 
         ws.addEventListener("close", (event)=> {
             console.log("WebSocket connection closed");
-            console.log(event)
         })
 
         ws.addEventListener("error", (event)=> {
-            console.error("WebSocket error:", event.error);
+            console.log("WebSocket error:", event.error);
         })
     }
+
+    useEffect(()=> {
+      async function getMessages() {
+            const url = state?.community && `${URL}/api/community/${state.community}` ||
+            state?.user && `${URL}/api/user/${state.user}`
+            const data = await fetchCommunityMessages(url)
+            setMessages(data)
+            setIsLoading(false)
+       }
+       getMessages()
+    }, [])
+
+    useEffect(()=> {
+        if (responseMessage) {
+            createMessageElement(responseMessage)
+            setResponseMessage(null)
+        }
+    }, [responseMessage])
 
     useEffect(()=> {
         handleWebSocket()
     }, [newMessage])
 
-    useEffect(() => {
-        state?.messages && setMessages(state.messages)
-        setIsLoading(false)
-    }, []);
+    if (!userAuth) {
+        return (
+            <Navigate to='/sign-in' />
+        )
+    }
 
     if (isLoading) {
         return (
@@ -99,9 +117,9 @@ function Messages() {
                 <div className='chat-message-profile-container'>
                     <div className='chat-message-profile-img'>
                         {state?.user && <img src={avatar} alt="" /> ||
-                        state?.name && <button><i className="fa-solid fa-city"></i></button>}
+                        state?.community && <button><i className="fa-solid fa-city"></i></button>}
                     </div>
-                    <p className='chat-message-profile-user'>{state?.user && state.user || state?.name && state.name}</p>
+                    <p className='chat-message-profile-user'>{state?.user && state.user || state?.community && state.community}</p>
                 </div>
             </div>
             <div className="chat-box">

@@ -1,9 +1,8 @@
 
-// export const URL = window.location.host === 'localhost:3000' ? 'http://127.0.0.1:8000' : null
 export const URL = "http://127.0.0.1:8000"
 export const wsURL = "ws://127.0.0.1:8000";
 
-export async function fetchChatRoomNames(url) {
+export async function fetchChatRoomCommunities(url) {
     const resp = await fetch(url, {
         method: "GET",
         headers: {
@@ -14,7 +13,7 @@ export async function fetchChatRoomNames(url) {
     return data;
 }
 
-export async function fetchMessages(url) {
+export async function fetchCommunityMessages(url) {
     const resp = await fetch(url, {
         method: "GET",
         headers: {
@@ -23,6 +22,18 @@ export async function fetchMessages(url) {
     });
     const data = await resp.json();
     return data;
+}
+
+export async function getUsers(url, token) {
+    const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        },
+    })
+    const data = await resp.json()
+    return data
 }
 
 // User authentication

@@ -16,37 +16,6 @@ function ChatRoom() {
     const [chatRoomName, setChatRoomName] = useState('public')
     const { state, pathname } = useLocation()
 
-    // function handleWebSocket() {
-    //     const params = `?user=${userAuth?.user}&token=${userAuth?.token}`
-    //     const URL = `${wsURL}/ws/chat/room/${chatRoomName}/${params}`;
-    //     const ws = new WebSocket(URL);
-
-    //     ws.addEventListener("open", (event) => {
-    //         console.log("Websocket connection established.");
-    //         ws.send(JSON.stringify(chatMessage));
-    //     });
-
-    //     ws.addEventListener("message", (event) => {
-    //         const data = JSON.parse(event.data);
-    //         if (data?.message) {
-    //            createMessageElement(data)
-    //            console.log(data)
-    //         }
-    //         else if (data.error) {
-    //             console.log(data.error)
-    //         }
-    //     });
-
-    //     ws.addEventListener("close", (event)=> {
-    //         console.log("WebSocket connection closed");
-    //         console.log(event)
-    //     })
-
-    //     ws.addEventListener("error", (event)=> {
-    //         console.error("WebSocket error:", event.error);
-    //     })
-    // }
-
     function setWindowHeight(params) {
         const windowHeight = window.innerHeight
         const chatRoomsMain = document.querySelector('.chat-rooms-main')
