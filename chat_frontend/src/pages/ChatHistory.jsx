@@ -1,13 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useOutletContext, Link, useLocation } from 'react-router-dom'
 import avatar from '../images/avatar.png'
+import { URL, fetchChatHistory } from '../utils/api'
+import { RootLayOutContext } from '../layouts/RootLayout'
 
 function ChatHistory() {
     const [ isLoading, setIsLoading ] = useState(true)
+    const [ chatHistory, setChatHistory ] = useState(null)
     const { pathname } = useLocation()
+    const { userAuth } = useContext(RootLayOutContext)
+
+    // console.log(userAuth)
 
     useEffect(()=> {
-        setIsLoading(false)
+        async function getChatHistory() {
+            const url = `${URL}/api/chat/history/${userAuth.user}/`
+            const data = await fetchChatHistory(url, userAuth.token)
+            setChatHistory(data[0])
+            setIsLoading(false)
+        }
+        getChatHistory()
     }, [])
 
     if (isLoading) {
@@ -24,84 +36,53 @@ function ChatHistory() {
     return (
         <div className="chat-history-container">
             <div className="chat-history">
-                <Link 
-                    state={{redirect:'Chats',user:'James', redirectPath:pathname}}
-                    className="chat-history-link" 
-                    to="../chatting/with/james" 
-                >
-                    <div className="chat-history-profile-img-container">
-                        <img src={avatar} alt="" />
+                {chatHistory?.users.length > 0 &&
+                    <div className="chat-history-users">
+                        <h3>Users</h3>
+                        {chatHistory.users.map((user)=> {
+                            return (
+                                <Link
+                                    key={user} 
+                                    state={{redirect:'Chats',user:user, redirectPath:pathname}}
+                                    className="chat-history-link" 
+                                    to={`../chatting/with/${user}`}
+                                >
+                                    <div className="chat-history-profile-img-container">
+                                        <img src={avatar} alt="" />
+                                    </div>
+                                    <div className="chat-history-username-date">
+                                        <span>{user}</span>
+                                        <span>{new Date().toLocaleDateString()}</span>
+                                    </div>
+                                </Link>
+                            )
+                        })}
                     </div>
-                    <div className="chat-history-username-date">
-                        <span>James</span>
-                        <span>{new Date().toLocaleDateString()}</span>
+                }
+                {chatHistory?.communities.length > 0 &&
+                    <div className="chat-history-communities">
+                        <h3>Communities</h3>
+                        {chatHistory.communities.map((community)=> {
+                            const lastChatDate = chatHistory.last_chat_date_community[community]
+                            return (
+                                <Link
+                                    key={community}
+                                    state={{redirect:'Chats',community:community, redirectPath:pathname}}
+                                    className="chat-history-link" 
+                                    to={`../chatting/in/${community}`} 
+                                >
+                                    <div className="chat-history-profile-img-container">
+                                        <img src={avatar} alt="" />
+                                    </div>
+                                    <div className="chat-history-username-date">
+                                        <span>{community}</span>
+                                        <span>{new Date(lastChatDate).toLocaleDateString()}</span>
+                                    </div>
+                                </Link>
+                            )
+                        })}
                     </div>
-                </Link>
-                <Link
-                    state={{redirect:'Chats',user:'greg',redirectPath:pathname}}
-                    className="chat-history-link" 
-                    to="../chatting/with/greg" 
-                >
-                    <div className="chat-history-profile-img-container">
-                        <img src={avatar} alt="" />
-                    </div>
-                    <div className="chat-history-username-date">
-                        <span>Greg</span>
-                        <span>{new Date().toLocaleDateString()}</span>
-                    </div>
-                </Link>
-                <Link
-                    state={{redirect:'Chats',user:'dan',redirectPath:pathname}}
-                    className="chat-history-link" 
-                    to="../chatting/with/dan" 
-                >
-                    <div className="chat-history-profile-img-container">
-                        <img src={avatar} alt="" />
-                    </div>
-                    <div className="chat-history-username-date">
-                        <span>Dan</span>
-                        <span>{new Date().toLocaleDateString()}</span>
-                    </div>
-                </Link>
-                <Link
-                    state={{redirect:'Chats',user:'matt',redirectPath:pathname}}
-                    className="chat-history-link" 
-                    to="../chatting/with/matt" 
-                >
-                    <div className="chat-history-profile-img-container">
-                        <img src={avatar} alt="" />
-                    </div>
-                    <div className="chat-history-username-date">
-                        <span>Matt</span>
-                        <span>{new Date().toLocaleDateString()}</span>
-                    </div>
-                </Link>
-                <Link
-                    state={{redirect:'Chats',user:'smith',redirectPath:pathname}}
-                    className="chat-history-link" 
-                    to="../chatting/with/smith" 
-                >
-                    <div className="chat-history-profile-img-container">
-                        <img src={avatar} alt="" />
-                    </div>
-                    <div className="chat-history-username-date">
-                        <span>Smith</span>
-                        <span>{new Date().toLocaleDateString()}</span>
-                    </div>
-                </Link>
-                <Link
-                    state={{redirect:'Chats',user:'olson',redirectPath:pathname}}
-                    className="chat-history-link" 
-                    to="../chatting/with/olson" 
-                >
-                    <div className="chat-history-profile-img-container">
-                        <img src={avatar} alt="" />
-                    </div>
-                    <div className="chat-history-username-date">
-                        <span>Olson</span>
-                        <span>{new Date().toLocaleDateString()}</span>
-                    </div>
-                </Link>
+                }
             </div>
         </div>
     )

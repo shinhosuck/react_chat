@@ -36,6 +36,18 @@ export async function getUsers(url, token) {
     return data
 }
 
+export async function fetchChatHistory(url, token){
+    const resp = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
+    const data = await resp.json()
+    return data
+}
+
 // User authentication
 
 export async function userRegister(url, body) {

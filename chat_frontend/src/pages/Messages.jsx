@@ -18,8 +18,6 @@ function Messages() {
     const messageRef = useRef()
     const { state } = useLocation()
 
-    console.log(state)
-
     function handleSubmit(event) {
         event.preventDefault();
         const communityOrUser = state?.community && {community:state.community} || 
