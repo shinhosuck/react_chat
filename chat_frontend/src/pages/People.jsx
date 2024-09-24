@@ -8,7 +8,7 @@ function People() {
     const [ users, setUsers ] = useState(null)
     const { pathname, state } = useLocation()
     const { userAuth } = useContext(RootLayOutContext)
-    
+
     useEffect(()=> {
         async function fetchUsers() {
             const url = `${URL}/api/auth/users/`

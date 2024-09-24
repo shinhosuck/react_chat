@@ -12,7 +12,7 @@ function Home() {
 
     if (userAuth) {
         return (
-            <Navigate to='/chat-room' />
+            <Navigate to='/chat-rooms' />
         )
     }
 

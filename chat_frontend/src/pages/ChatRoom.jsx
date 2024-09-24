@@ -13,7 +13,6 @@ function ChatRoom() {
     const [errorOrMessage, setErrorOrMessage] = useState(null)
     const { userAuth } = useContext(RootLayOutContext)
     const [height, setHeight] = useState(window.innerHeight)
-    const [chatRoomName, setChatRoomName] = useState('public')
     const { state, pathname } = useLocation()
 
     function setWindowHeight(params) {
@@ -42,7 +41,7 @@ function ChatRoom() {
         document.title = "Chat Room"
         if (state?.message || state?.error) {
             window.history.replaceState(
-                {state: null}, '', '/chat-room'
+                {state: null}, '', '/chat-rooms'
             )
         }
     }, [])
@@ -105,9 +104,8 @@ function ChatRoom() {
                         <i className="fa-solid fa-users"></i>
                         <p>People</p>
                     </NavLink>
-                    
                 </div>
-                <Outlet context={{}}/>
+                <Outlet />
             </div>
         </div>
     );

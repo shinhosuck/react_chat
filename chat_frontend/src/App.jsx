@@ -22,7 +22,7 @@ const routes = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<RootLayout />}>
             <Route index element={<Home />} />
-            <Route path="chat-room" element={<ChatRoom />}>
+            <Route path="chat-rooms" element={<ChatRoom />}>
                 <Route index element={<ChatHistory />} />
                 <Route path='people' element={<People />} />
                 <Route path="communities" element={<Communities />}/>

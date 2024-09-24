@@ -10,8 +10,6 @@ function ChatHistory() {
     const { pathname } = useLocation()
     const { userAuth } = useContext(RootLayOutContext)
 
-    // console.log(userAuth)
-
     useEffect(()=> {
         async function getChatHistory() {
             const url = `${URL}/api/chat/history/${userAuth.user}/`
@@ -38,8 +36,9 @@ function ChatHistory() {
             <div className="chat-history">
                 {chatHistory?.users.length > 0 &&
                     <div className="chat-history-users">
-                        <h3>Users</h3>
+                        <h3 className="chat-history-header">Users</h3>
                         {chatHistory.users.map((user)=> {
+                            const lastChatDate = chatHistory.last_chat_date_user[user]
                             return (
                                 <Link
                                     key={user} 
@@ -52,7 +51,7 @@ function ChatHistory() {
                                     </div>
                                     <div className="chat-history-username-date">
                                         <span>{user}</span>
-                                        <span>{new Date().toLocaleDateString()}</span>
+                                        <span>{new Date(lastChatDate).toLocaleDateString()}</span>
                                     </div>
                                 </Link>
                             )
@@ -61,7 +60,7 @@ function ChatHistory() {
                 }
                 {chatHistory?.communities.length > 0 &&
                     <div className="chat-history-communities">
-                        <h3>Communities</h3>
+                        <h3 className="chat-history-header">Communities</h3>
                         {chatHistory.communities.map((community)=> {
                             const lastChatDate = chatHistory.last_chat_date_community[community]
                             return (

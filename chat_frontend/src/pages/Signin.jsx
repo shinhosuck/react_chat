@@ -26,8 +26,8 @@ function Signin() {
                 setBackendError(data)
             }else {
                 setUserAuth(data)
-                window.localStorage.setItem('user', JSON.stringify(data))
-                navigate('/chat-room', {replace:true, state:{message:data.message}})
+                sessionStorage.setItem('user', JSON.stringify(data))
+                navigate('/chat-rooms', {replace:true, state:{message:data.message}})
             }
         }
         else {
@@ -79,7 +79,7 @@ function Signin() {
     if (userAuth) {
         return (
             <Navigate 
-                to='/chat-room' 
+                to='/chat-rooms' 
                 replace={true} state={{error:'You are signed in already.'}} 
             />
         )

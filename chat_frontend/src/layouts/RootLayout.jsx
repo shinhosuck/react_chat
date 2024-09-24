@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useState, createContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -8,8 +6,10 @@ import Navbar from "../components/Navbar";
 export const RootLayOutContext = createContext()
 
 function RootLayout() {
-    const [userAuth, setUserAuth] = useState(JSON.parse(localStorage.getItem('user'))||null)
-
+    const [ userAuth, setUserAuth ] = useState(
+        JSON.parse(sessionStorage.getItem('user'))||null
+    )
+    
     return (
         <RootLayOutContext.Provider value={{userAuth, setUserAuth}}>
             <header>

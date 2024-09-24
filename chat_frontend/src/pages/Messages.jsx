@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import {Link, useLocation, useParams, useOutletContext, Navigate } from 'react-router-dom'
-import { fetchCommunityMessages, URL } from "../utils/api";
+import { fetchCommunityMessages, URL, wsURL } from "../utils/api";
 import {  RootLayOutContext } from "../layouts/RootLayout"
 import avatar from '../images/avatar.png'
 import { formatDate } from '../utils/formatDate'
-import { wsURL } from "../utils/api"
 import { createMessageElement } from "../utils/createElement"
 
 const url = `${URL}/api/messages/`
@@ -12,12 +11,20 @@ const url = `${URL}/api/messages/`
 function Messages() {
     const [newMessage, setNewMessage] = useState(null);
     const [responseMessage, setResponseMessage] = useState(null)
+    // const [ chatType, setChatType ] = useState(null)
     const [messages, setMessages] = useState(null);
     const [isLoading, setIsLoading] = useState(true)
     const { userAuth, setUserAuth } = useContext(RootLayOutContext)
     const messageRef = useRef()
     const { state } = useLocation()
 
+    const params = `?user=${userAuth?.user}&token=${userAuth?.token}`
+    const wsocketURL = state?.community && 
+        `${wsURL}/ws/chat/room/${state?.community &&
+        state.community}/${params}` ||
+        state?.user && `${wsURL}/ws/chat/user/${state?.user && 
+        state.user}/${params}`;
+    
     function handleSubmit(event) {
         event.preventDefault();
         const communityOrUser = state?.community && {community:state.community} || 
@@ -29,11 +36,13 @@ function Messages() {
     }
 
     function handleWebSocket() {
-        const params = `?user=${userAuth?.user}&token=${userAuth?.token}`
-        const URL = state?.community && `${wsURL}/ws/chat/room/${state?.community && state.community}/${params}` ||
-                    state?.user && `${wsURL}/ws/chat/user/${state?.user && state.user}/${params}`;
-        const ws = new WebSocket(URL);
-      
+        const type = state?.community && 
+        state.community || 
+        state?.user && state.user
+        type && sessionStorage.setItem('chatType', type)
+
+        let ws = new WebSocket(wsocketURL);
+
         newMessage && ws.addEventListener("open", (event) => {
             console.log("Websocket connection established.");
             ws.send(JSON.stringify(newMessage));
@@ -61,6 +70,19 @@ function Messages() {
     }
 
     useEffect(()=> {
+        function scrollElementInToView() {
+            const chats = document.querySelector('.chats')
+            const element =chats && Array.from(chats.children).slice(-1)[0]
+            element && element.scrollIntoView({ 
+                behavior: "auto", 
+                block: "end", 
+                inline: "nearest" 
+            });
+        }
+        scrollElementInToView()
+    }, [messages])
+
+    useEffect(()=> {
       async function getMessages() {
             const url = state?.community && `${URL}/api/community/${state.community}` ||
             state?.user && `${URL}/api/user/${state.user}`
@@ -79,12 +101,22 @@ function Messages() {
     }, [responseMessage])
 
     useEffect(()=> {
+        const chatType = sessionStorage.getItem('chatType')
+        const stateValue = state?.user && state.user ||
+        state?.community && state.community 
+
         handleWebSocket()
     }, [newMessage])
 
     if (!userAuth) {
         return (
             <Navigate to='/sign-in' />
+        )
+    }
+
+    if (!state) {
+        return (
+            <Navigate to='/chat-rooms' />
         )
     }
 
@@ -98,7 +130,7 @@ function Messages() {
             </div>
         )
     }
-
+    
     return (
         <div className='chat-message-container'>
             <div className='chat-message-row'>
@@ -110,7 +142,6 @@ function Messages() {
                     <span className='chat-message-arrow-left'>
                         <i className="fas fa-arrow-left"></i>
                     </span>
-                    <span>{state?.redirect && state.redirect}</span>
                 </Link>
                 <div className='chat-message-profile-container'>
                     <div className='chat-message-profile-img'>
@@ -119,6 +150,9 @@ function Messages() {
                     </div>
                     <p className='chat-message-profile-user'>{state?.user && state.user || state?.community && state.community}</p>
                 </div>
+                <button className="chat-message-ellipsis">
+                    <i className="fa-solid fa-ellipsis"></i>
+                </button>
             </div>
             <div className="chat-box">
                 <div className='chats'>

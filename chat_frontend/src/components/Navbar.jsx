@@ -13,7 +13,7 @@ function Navbar({setUser}) {
         event.preventDefault()
         setUserAuth(null)
         setToggleNavLinks(false)
-        localStorage.removeItem('user')
+        sessionStorage.removeItem('user')
         navigate('/sign-in', {state:{message:'Successfully signed out.'}})
     }
 
@@ -42,12 +42,12 @@ function Navbar({setUser}) {
                             <>
                                 <NavLink 
                                     onClick={()=> setToggleNavLinks(false)} 
-                                    to="chat-room" 
+                                    to="chat-rooms" 
                                     className={({isActive})=>isActive?
                                     'active-mobile-link mobile-nav-link'
                                     :'mobile-nav-link'}
                                 >
-                                    Chat room
+                                    Chat rooms
                                 </NavLink>
                                 <button 
                                     onClick={handleSignOut} 
@@ -97,11 +97,11 @@ function Navbar({setUser}) {
                         {userAuth ?
                             <>
                                 <NavLink 
-                                    to="chat-room" 
+                                    to="chat-rooms" 
                                     className={({isActive})=>isActive?
                                     'active-link navlink':'navlink'}
                                 >
-                                    Chat room
+                                    Chat rooms
                                 </NavLink>
                                 <button 
                                     type="button" 
