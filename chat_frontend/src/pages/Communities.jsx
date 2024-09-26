@@ -10,7 +10,6 @@ function Communities() {
     const [ communities, setcommunities] = useState(null);
     const { state, pathname } = useLocation()
 
-    
     useEffect(() => {
         async function getChatRoomNames() {
             const url = `${URL}/api/chat/communities/`;
@@ -43,6 +42,7 @@ function Communities() {
                                     redirect:'Communities',
                                     community:community.name, 
                                     redirectPath:pathname,
+                                    logo_url:community.logo_url
                                 }}
                                 to={`../../chatting/in/${community.name}`}
                                 key={community.id}
@@ -51,8 +51,13 @@ function Communities() {
                                     'community-link'
                                 }
                             >
-                                <span>{community.name}</span>
-                                <span>10 users</span>
+                                <div className="community-name-image-container">
+                                    <div className="community-img-container">
+                                        <img className="community-img" src={community.logo_url} alt="community_image" />
+                                    </div>
+                                    <span className="community-name">{community.name}</span>
+                                </div>
+                                <span className="community-total-users">10 users</span>
                             </Link>
                         );
                     })}

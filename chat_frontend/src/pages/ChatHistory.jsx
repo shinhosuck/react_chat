@@ -4,6 +4,7 @@ import avatar from '../images/avatar.png'
 import { URL, fetchChatHistory } from '../utils/api'
 import { RootLayOutContext } from '../layouts/RootLayout'
 
+
 function ChatHistory() {
     const [ isLoading, setIsLoading ] = useState(true)
     const [ chatHistory, setChatHistory ] = useState(null)
@@ -14,6 +15,7 @@ function ChatHistory() {
         async function getChatHistory() {
             const url = `${URL}/api/chat/history/${userAuth.user}/`
             const data = await fetchChatHistory(url, userAuth.token)
+            console.log(data)
             setChatHistory(data[0])
             setIsLoading(false)
         }
@@ -40,20 +42,23 @@ function ChatHistory() {
                         {chatHistory.users.map((user)=> {
                             const lastChatDate = chatHistory.last_chat_date_user[user]
                             return (
-                                <Link
+                               lastChatDate && <Link
                                     key={user} 
                                     state={{redirect:'Chats',user:user, redirectPath:pathname}}
                                     className="chat-history-link" 
                                     to={`../chatting/with/${user}`}
                                 >
+                                <>
                                     <div className="chat-history-profile-img-container">
                                         <img src={avatar} alt="" />
                                     </div>
                                     <div className="chat-history-username-date">
-                                        <span>{user}</span>
+                                    <span>{user}</span>
                                         <span>{new Date(lastChatDate).toLocaleDateString()}</span>
                                     </div>
+                                </>
                                 </Link>
+                           
                             )
                         })}
                     </div>

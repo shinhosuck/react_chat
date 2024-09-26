@@ -7,19 +7,20 @@ export function createMessageElement(data) {
     const div = document.createElement('div')
     const p = document.createElement('p')
 
-    const attr = user.user === data.author ? 
+    const attr = user.user === data?.author || user.user === data?.user ?
     'my-message chat-message ':
     'user-message chat-message'
-
+    
     div.setAttribute('class', attr)
     p.setAttribute('class', 'chat')
 
-    if (data.author !== user.user) {
+    if (data?.author && data.author !== user.user || 
+        data?.user && data.user !== user.user) {
         const span = document.createElement('span')
         const span1 = document.createElement('span')
         const span2 = document.createElement('span')
 
-        span.innerHTML = data.author
+        span.innerHTML = data.author || data.user
         span1.innerHTML = data.message
         span2.innerHTML = formatDate(data.created)
         p.append(span, span1, span2)

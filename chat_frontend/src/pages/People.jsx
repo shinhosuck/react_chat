@@ -3,6 +3,7 @@ import { Link, useLocation} from 'react-router-dom'
 import { URL, getUsers } from '../utils/api'
 import { RootLayOutContext } from '../layouts/RootLayout'
 
+
 function People() {
     const [ isLoading, setIsLoading ] = useState(true)
     const [ users, setUsers ] = useState(null)
@@ -41,10 +42,19 @@ function People() {
                             'people-link active-chat-room' : 
                             'people-link'}
                         to={`../../chatting/with/${person.user}`}
-                        state = {{redirect:'People', user:person.user, redirectPath:pathname}}
+                        state = {{redirect:'People', 
+                            user:person.user, 
+                            redirectPath:pathname,
+                            avatar_url: person.avatar_url
+                        }}
                     >
-                        <span>{person.user}</span>
-                        <span>online</span>
+                        <div className="person-info-container">
+                            <div className="person-img-container">
+                                <img className="person-avatar" src={person.avatar_url} alt="avatar" />
+                            </div>
+                            <span className="person-name">{person.user}</span>
+                        </div>
+                        <span className="person-online">online</span>
                     </Link>
                 )
             })}

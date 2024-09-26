@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import {Link, useLocation, useParams, useOutletContext, Navigate } from 'react-router-dom'
-import { fetchCommunityMessages, URL, wsURL } from "../utils/api";
+import { fetchMessages, URL, wsURL } from "../utils/api";
 import {  RootLayOutContext } from "../layouts/RootLayout"
 import avatar from '../images/avatar.png'
 import { formatDate } from '../utils/formatDate'
@@ -11,10 +11,10 @@ const url = `${URL}/api/messages/`
 function Messages() {
     const [newMessage, setNewMessage] = useState(null);
     const [responseMessage, setResponseMessage] = useState(null)
-    // const [ chatType, setChatType ] = useState(null)
     const [messages, setMessages] = useState(null);
     const [isLoading, setIsLoading] = useState(true)
     const { userAuth, setUserAuth } = useContext(RootLayOutContext)
+    // const [showMessageModal, setShowMessageModal] = useState({id:''})
     const messageRef = useRef()
     const { state } = useLocation()
 
@@ -31,7 +31,14 @@ function Messages() {
             state?.user && {user:state.user}
         const value = messageRef.current.value;
         const message = value && {message:value}
-        message && setNewMessage({...message, ...communityOrUser})
+        message && setNewMessage({
+            ...message, 
+            ...communityOrUser, 
+            respondingTo:responseMessage?.user && 
+            responseMessage.user !== userAuth.user ?
+            {id:responseMessage.id,user:responseMessage.user} : null
+        })
+        setResponseMessage(null)
         event.target.reset()
     }
 
@@ -86,7 +93,8 @@ function Messages() {
       async function getMessages() {
             const url = state?.community && `${URL}/api/community/${state.community}` ||
             state?.user && `${URL}/api/user/${state.user}`
-            const data = await fetchCommunityMessages(url)
+            const data = await fetchMessages(url, userAuth.token)
+            console.log(data)
             setMessages(data)
             setIsLoading(false)
        }
@@ -96,7 +104,6 @@ function Messages() {
     useEffect(()=> {
         if (responseMessage) {
             createMessageElement(responseMessage)
-            setResponseMessage(null)
         }
     }, [responseMessage])
 
@@ -104,7 +111,6 @@ function Messages() {
         const chatType = sessionStorage.getItem('chatType')
         const stateValue = state?.user && state.user ||
         state?.community && state.community 
-
         handleWebSocket()
     }, [newMessage])
 
@@ -145,8 +151,10 @@ function Messages() {
                 </Link>
                 <div className='chat-message-profile-container'>
                     <div className='chat-message-profile-img'>
-                        {state?.user && <img src={avatar} alt="" /> ||
-                        state?.community && <button><i className="fa-solid fa-city"></i></button>}
+                        {state?.user && <img src={state.avatar_url} alt="" /> ||
+                            state?.community && 
+                            <img src={state.logo_url} alt="community_logo" />
+                        }
                     </div>
                     <p className='chat-message-profile-user'>{state?.user && state.user || state?.community && state.community}</p>
                 </div>
@@ -156,25 +164,62 @@ function Messages() {
             </div>
             <div className="chat-box">
                 <div className='chats'>
-                    {messages?.map((message)=> {
-                        return (
-                            <div
-                                key={message.id} 
-                                className={
-                                    message.author === userAuth.user?
-                                    'my-message chat-message':'user-message chat-message'
-                                }
-                            >
-                                <p className='chat'>
-                                    {message.author !== userAuth.user
-                                        && <span>{message.author}</span>}
-                                    <span>{message.message}</span>
-                                    {message.author !== userAuth.user
-                                        && <span>{formatDate(message.created)}</span>}
-                                </p>
-                            </div>
-                        )
-                    })}
+                    {messages &&
+                        messages.type ==='community' &&
+                            messages.message_list.map((message)=> {
+                                return (
+                                    <div
+                                        key={message.id} 
+                                        className={
+                                            message.author === userAuth.user ?
+                                            'my-message chat-message':
+                                            'user-message chat-message'
+                                        }
+                                    >
+                                        <p className='chat'>
+                                            {message.author !== userAuth.user
+                                                && <span>{message.author}</span>}
+                                            <span>{message.message}</span>
+                                            {message.author !== userAuth.user
+                                                && <span>{formatDate(message.created)}</span>}
+                                        </p>
+                                    </div>
+                                )
+                            })
+                        ||
+                        messages.type === 'user' &&
+                            messages.messages_list.map((message)=> {
+                                return (
+                                    <React.Fragment key={message.id}>
+                                        {message.message && 
+                                            <div
+                                                // onClick={()=> setShowMessageModal({id:message.id})}
+                                                key={message.id} 
+                                                className='my-message chat-message'
+                                            >
+                                                <p className='chat'>
+                                                    <span>{message.message}</span>
+                                                </p>
+                                                {/* {showMessageModal.id === message.id &&
+                                                    <div className='my-message-modal'>
+                                                        <button><i className="fas fa-times"></i></button>
+                                                    </div>
+                                                } */}
+                                            </div>
+                                        }
+                                        {message.other_user_message && 
+                                            <div className='user-message chat-message'>
+                                                <p className='chat'>
+                                                    <span>{message.other_user}</span>
+                                                    <span>{message.other_user_message}</span>
+                                                    <span>{formatDate(message.other_meessage_created)}</span>
+                                                </p>
+                                            </div>
+                                        }
+                                    </React.Fragment>
+                                )
+                            })
+                    }
                 </div>
                 <form className='message-form' onSubmit={handleSubmit}>
                     <input type="text" name='message' autoFocus={true} ref={messageRef} placeholder="What's on your mind?"/>

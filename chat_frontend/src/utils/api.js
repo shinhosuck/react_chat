@@ -3,21 +3,26 @@ export const URL = "http://127.0.0.1:8000"
 export const wsURL = "ws://127.0.0.1:8000";
 
 export async function fetchChatRoomCommunities(url) {
-    const resp = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-    const data = await resp.json();
-    return data;
+    try {
+        const resp = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const data = await resp.json();
+        return data
+    } catch (error) {
+        return {error:'Please check your network and try gain.'}
+    }
 }
 
-export async function fetchCommunityMessages(url) {
+export async function fetchMessages(url, token) {
     const resp = await fetch(url, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Token ${token}`
         },
     });
     const data = await resp.json();

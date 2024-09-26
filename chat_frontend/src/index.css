@@ -32,7 +32,7 @@ button {
     padding: 0.2rem 0;
     margin: 0 1rem;
     display: grid;
-    gap:0.3rem;
+    gap: 0.3rem;
     font-size: 0.9rem;
     letter-spacing: 0.03rem;
 }
@@ -59,7 +59,7 @@ button {
 }
 
 .message-row {
-   background: rgb(16, 114, 206); 
+    background: rgb(16, 114, 206);
 }
 
 .show-error-row,
@@ -90,6 +90,7 @@ button {
 }
 
 @media screen and (min-width:700px) {
+
     .error-row,
     .message-row {
         top: 66.74px;
@@ -121,7 +122,7 @@ header {
     color: #21ab21;
 }
 
-.mobile-navbar-logo > h2 {
+.mobile-navbar-logo>h2 {
     line-height: 1;
     font-size: 1.6rem;
 }
@@ -131,7 +132,7 @@ header {
     align-items: center;
 }
 
-.mobile-navlinks-toggle-btns > button {
+.mobile-navlinks-toggle-btns>button {
     border: none;
     line-height: 1;
     font-size: 1.4rem;
@@ -188,6 +189,7 @@ header {
 .navbar-container {
     display: none;
 }
+
 @media screen and (min-width: 700px) {
     .mobile-navbar-container {
         display: none;
@@ -210,7 +212,7 @@ header {
         color: rgb(33, 171, 33);
     }
 
-    .navbar-logo > h2 {
+    .navbar-logo>h2 {
         line-height: 1;
         font-size: 1.8rem;
     }
@@ -256,16 +258,15 @@ header {
         }
     }
 }
+
 /* End */
 
 /* Home */
 .home-container {
     height: calc(100svh - 57.60px);
-    background: linear-gradient(
-            to bottom,
+    background: linear-gradient(to bottom,
             rgba(0, 0, 0, 0.6),
-            rgba(0, 0, 0, 0.9)
-        ),
+            rgba(0, 0, 0, 0.9)),
         url("./images/bg.webp");
     background-position: center;
     background-repeat: no-repeat;
@@ -312,6 +313,7 @@ header {
     border-radius: 5px;
     justify-self: center;
 }
+
 /* End */
 
 /* Sign up */
@@ -385,7 +387,8 @@ header {
     color: hsl(0, 0%, 15%);
     font-size: 1.1rem;
 }
-.signup-form-sign-up-btn > a {
+
+.signup-form-sign-up-btn>a {
     color: rgb(0, 152, 0);
     font-weight: 500;
     font-size: 1.1rem;
@@ -452,7 +455,7 @@ header {
 }
 
 .sign-in-form-sign-in {
-     padding: 1rem;
+    padding: 1rem;
     border: none;
     background: rgb(0, 190, 0);
     color: white;
@@ -472,11 +475,12 @@ header {
     font-size: 1.1rem;
 }
 
-.sign-in-form-sign-in-btn > a {
+.sign-in-form-sign-in-btn>a {
     color: rgb(0, 152, 0);
     font-weight: 500;
     font-size: 1.1rem;
 }
+
 /* End */
 
 /* Chat Room */
@@ -504,7 +508,7 @@ header {
 }
 
 .chat-room-chat-room-type {
-    grid-column: 1 / 4 ;
+    grid-column: 1 / 4;
     font-size: 0.9rem;
     letter-spacing: 0.04rem;
     text-align: center;
@@ -524,17 +528,18 @@ header {
     color: hsl(210, 86%, 61%);
 }
 
-.active-chat-room  {
+.active-chat-room {
     color: hsl(122, 86%, 61%) !important;
 }
 
-.chat-room-icon > i {
-    font-size: 1.4rem;
+.chat-room-icon>i {
+    font-size: 1.5rem;
 }
 
-.chat-room-icon > p {
+.chat-room-icon>p {
     font-size: 0.9rem;
 }
+
 /* End */
 
 /* Messages */
@@ -550,7 +555,7 @@ header {
     max-height: calc(100svh - 57.6px);
 }
 
-.chat-message-container > * {
+.chat-message-container>* {
     width: 90%;
     max-width: 500px;
     margin: 0 auto;
@@ -579,7 +584,7 @@ header {
     transition: background 200ms linear;
 }
 
-.chat-message-arrow-left > i {
+.chat-message-arrow-left>i {
     font-size: 1.3rem;
     color: hsl(0, 0%, 80%);
 }
@@ -588,7 +593,7 @@ header {
     display: grid;
     gap: 0.3rem;
     align-content: start;
-    justify-items: center ;
+    justify-items: center;
 }
 
 .chat-message-profile-img {
@@ -599,16 +604,16 @@ header {
     aspect-ratio: 1/1;
     padding: 0.4rem;
     border-radius: 50%;
-    background: hsl(210, 77%, 81%);
+    background: hsl(0, 0%, 100%);
 }
 
-.chat-message-profile-img > img {
+.chat-message-profile-img>img {
     width: 100%;
     height: auto;
     display: block;
 }
 
-.chat-message-profile-img > button {
+.chat-message-profile-img>button {
     display: grid;
     align-self: center;
     justify-content: center;
@@ -617,7 +622,7 @@ header {
     border: none;
 }
 
-.chat-message-profile-img > button > i {
+.chat-message-profile-img>button>i {
     color: hsl(0, 0%, 30%);
     margin-top: 0.2rem;
 }
@@ -638,12 +643,13 @@ header {
     transition: background 200ms linear;
 }
 
-.chat-message-ellipsis > i {
+.chat-message-ellipsis>i {
     font-size: 1.3rem;
     color: hsl(0, 0%, 80%);
 }
 
 @media (hover) {
+
     .chat-message-ellipsis:hover,
     .chat-message-arrow-left:hover {
         background: hsl(210, 67%, 31%);
@@ -685,33 +691,49 @@ header {
 
 .my-message {
     justify-content: end;
+    align-items: center;
 }
 
-.my-message > .chat {
+.my-message>.chat {
     border-radius: 25px;
     padding: 0.5rem 1rem;
     color: hsl(0, 0%, 100%);
     background: hsl(180, 100%, 30%);
+    transition: transform 200ms linear;
 }
 
-.user-message > .chat {
+@media (hover) {
+    .my-message>.chat:hover {
+        transform: scale(1.1);
+    }
+}
+
+/* .my-message-modal {
+    position: absolute;
+    z-index: 2;
+    bottom: -100%;
+    right: 0;
+    height: 100%;
+} */
+
+.user-message>.chat {
     color: hsl(0, 0%, 15%);
     display: grid;
     gap: 0.4rem;
 }
 
-.user-message > .chat > span:nth-child(1) {
+.user-message>.chat>span:nth-child(1) {
     font-size: 0.8rem;
     color: hsl(0, 0%, 70%);
 }
 
-.user-message > .chat > span:nth-child(2) {
+.user-message>.chat>span:nth-child(2) {
     background: hsl(0, 0%, 100%);
     border-radius: 25px;
     padding: 0.5rem 1rem;
 }
 
-.user-message > .chat > span:nth-child(3) {
+.user-message>.chat>span:nth-child(3) {
     font-size: 0.8rem;
     color: hsl(0, 0%, 70%);
 }
@@ -724,7 +746,7 @@ header {
     background: hsl(210, 57%, 33%);
 }
 
-.message-form > input {
+.message-form>input {
     border: none;
     padding: 0.8rem 1.3rem;
     border-top-left-radius: 30px;
@@ -735,15 +757,15 @@ header {
     font-size: 1rem;
 }
 
-.message-form > input:focus {
+.message-form>input:focus {
     outline: none;
 }
 
-.message-form > input::placeholder {
+.message-form>input::placeholder {
     color: hsl(0, 0%, 70%);
 }
 
-.message-form > button {
+.message-form>button {
     border: none;
     padding: 0.8rem 1.3rem;
     border-top-right-radius: 30px;
@@ -752,10 +774,11 @@ header {
     color: white;
 }
 
-.message-form > button > i {
+.message-form>button>i {
     font-size: 1.1rem;
     margin-top: 0.2rem;
 }
+
 /* End */
 
 /* Chat History */
@@ -798,20 +821,18 @@ header {
 }
 
 @media (hover) {
-    .chat-history-link:hover >
-    .chat-history-profile-img-container {
+    .chat-history-link:hover>.chat-history-profile-img-container {
         background: rgb(174, 255, 174)
     }
 }
 
 @media (hover) {
-    .chat-history-link:hover >
-    .chat-history-username-date > span {
+    .chat-history-link:hover>.chat-history-username-date>span {
         color: rgb(174, 255, 174)
     }
 }
 
-.chat-history-profile-img-container  {
+.chat-history-profile-img-container {
     border-radius: 50%;
     padding: 0.3rem;
     width: 35px;
@@ -819,10 +840,11 @@ header {
     background: hsl(0, 0%, 70%);
 }
 
-.chat-history-profile-img-container > img {
+.chat-history-profile-img-container>img {
     width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
     display: block;
-    height: auto;
 }
 
 .chat-history-username-date {
@@ -832,10 +854,11 @@ header {
     justify-content: space-between
 }
 
-.chat-history-username-date > span:last-child {
+.chat-history-username-date>span:last-child {
     font-size: 0.8rem;
     color: hsl(0, 0%, 80%);
 }
+
 /* End */
 
 /* Communities */
@@ -867,7 +890,7 @@ header {
     letter-spacing: 0.04rem;
 }
 
-.community-link > span:nth-child(2){
+.community-link>span:nth-child(2) {
     font-size: 0.9rem !important;
     font-weight: 400;
 }
@@ -876,6 +899,27 @@ header {
     .community-link:hover {
         color: rgb(105, 255, 105)
     }
+}
+
+.community-name-image-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.community-img-container {
+    border-radius: 50%;
+    padding: 0.3rem;
+    width: 45px;
+    aspect-ratio: 1/1;
+    background: hsl(0, 0%, 100%);
+}
+
+.community-img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    display: block;
 }
 
 /* People */
@@ -903,4 +947,26 @@ header {
         color: rgb(105, 255, 105)
     }
 }
+
+.person-info-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem
+}
+
+.person-img-container {
+    border-radius: 50%;
+    padding: 0.3rem;
+    width: 35px;
+    aspect-ratio: 1/1;
+    background: hsl(0, 0%, 70%);
+}
+
+.person-avatar {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    display: block;
+}
+
 /* End */
