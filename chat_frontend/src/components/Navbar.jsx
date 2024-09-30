@@ -2,6 +2,7 @@
 import React, { useContext, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { RootLayOutContext } from '../layouts/RootLayout'
+import { updateChatSession } from '../utils/updateChatRoom'
 
 
 function Navbar({setUser}) {
@@ -9,11 +10,15 @@ function Navbar({setUser}) {
     const { setUserAuth, userAuth } = useContext(RootLayOutContext)
     const navigate = useNavigate()
 
-    function handleSignOut(event) {
+    async function handleSignOut(event) {
         event.preventDefault()
+        updateChatSession({
+            username:userAuth.user,
+            token:userAuth.token
+        })
+        sessionStorage.clear()
         setUserAuth(null)
         setToggleNavLinks(false)
-        sessionStorage.removeItem('user')
         navigate('/sign-in', {state:{message:'Successfully signed out.'}})
     }
 

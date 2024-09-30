@@ -3,7 +3,7 @@ import { useOutletContext, Link, useLocation } from 'react-router-dom'
 import avatar from '../images/avatar.png'
 import { URL, fetchChatHistory } from '../utils/api'
 import { RootLayOutContext } from '../layouts/RootLayout'
-
+import TimeAgo from 'react-timeago'
 
 function ChatHistory() {
     const [ isLoading, setIsLoading ] = useState(true)
@@ -15,8 +15,7 @@ function ChatHistory() {
         async function getChatHistory() {
             const url = `${URL}/api/chat/history/${userAuth.user}/`
             const data = await fetchChatHistory(url, userAuth.token)
-            console.log(data)
-            setChatHistory(data[0])
+            setChatHistory(data)
             setIsLoading(false)
         }
         getChatHistory()
@@ -34,60 +33,82 @@ function ChatHistory() {
     }
 
     return (
-        <div className="chat-history-container">
-            <div className="chat-history">
-                {chatHistory?.users.length > 0 &&
-                    <div className="chat-history-users">
-                        <h3 className="chat-history-header">Users</h3>
-                        {chatHistory.users.map((user)=> {
-                            const lastChatDate = chatHistory.last_chat_date_user[user]
-                            return (
-                               lastChatDate && <Link
-                                    key={user} 
-                                    state={{redirect:'Chats',user:user, redirectPath:pathname}}
-                                    className="chat-history-link" 
-                                    to={`../chatting/with/${user}`}
-                                >
-                                <>
-                                    <div className="chat-history-profile-img-container">
-                                        <img src={avatar} alt="" />
-                                    </div>
-                                    <div className="chat-history-username-date">
-                                    <span>{user}</span>
-                                        <span>{new Date(lastChatDate).toLocaleDateString()}</span>
-                                    </div>
-                                </>
-                                </Link>
-                           
-                            )
-                        })}
-                    </div>
-                }
-                {chatHistory?.communities.length > 0 &&
-                    <div className="chat-history-communities">
-                        <h3 className="chat-history-header">Communities</h3>
-                        {chatHistory.communities.map((community)=> {
-                            const lastChatDate = chatHistory.last_chat_date_community[community]
-                            return (
-                                <Link
-                                    key={community}
-                                    state={{redirect:'Chats',community:community, redirectPath:pathname}}
-                                    className="chat-history-link" 
-                                    to={`../chatting/in/${community}`} 
-                                >
-                                    <div className="chat-history-profile-img-container">
-                                        <img src={avatar} alt="" />
-                                    </div>
-                                    <div className="chat-history-username-date">
-                                        <span>{community}</span>
-                                        <span>{new Date(lastChatDate).toLocaleDateString()}</span>
-                                    </div>
-                                </Link>
-                            )
-                        })}
-                    </div>
-                }
-            </div>
+        <div className="chat-history">
+            {chatHistory &&
+                <>
+                    {chatHistory?.users &&
+                        <div className="chat-history-users">
+                            <h2 className="chat-history-header">Users</h2>
+                            {chatHistory.users.map((user)=> {
+                                return (
+                                    <Link
+                                        className="chat-history-link" 
+                                        to={`../chatting/with/${user.username}`}
+                                        key={user.username} 
+                                        state={{
+                                            redirect:'Chats',
+                                            user:user.username, 
+                                            redirectPath:pathname,
+                                            avatar_url: user.avatar_url
+                                        }}
+                                    >
+                                        <div className="chat-history-profile-img-name-container">
+                                            <div className="chat-history-profile-img">
+                                                <img src={user.avatar_url} alt="avatar" />
+                                            </div>
+                                            <div className="chat-history-profile-username">
+                                                <span className="username">{user.username}</span>
+                                                <span className="last-message">{user.last_message}</span>
+                                            </div>
+                                        </div>
+                                        <div className="chat-history-date-container">
+                                            <span className="last-chat-date">
+                                                <TimeAgo date={user.last_chat_date} />
+                                            </span>
+                                        </div>
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                    }
+                    {chatHistory?.communities &&
+                        <div className="chat-history-communities">
+                            <h2 className="chat-history-header">Communities</h2>
+                            {chatHistory.communities.map((community)=> {
+                                return (
+                                    <Link
+                                        className="chat-history-link" 
+                                        to={`../chatting/in/${community.community}`} 
+                                        key={community.community}
+                                        state={{
+                                            redirect:'Chats',
+                                            community:community.community,
+                                            redirectPath:pathname,
+                                            logo_url:community.logo_url
+                                        }}
+                                    >
+                                        <div className="chat-history-profile-img-name-container">
+                                            <div className="chat-history-profile-img">
+                                                <img src={community.logo_url} alt="" />
+                                            </div>
+                                            <div className="chat-history-profile-name">
+                                                <span className="name">{community.community}</span>
+                                                <span className="last-message">{community.last_message}</span>
+                                            </div>
+                                        </div>
+                                        <div className="chat-history-date-container">
+                                            <span className="last-chat-date">
+                                                <TimeAgo date={community.last_chat_date} />
+                                            </span>
+                                        </div>
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                    }
+                </>     
+            }
+            <h2 className="no-chat-history">{chatHistory.message}</h2>
         </div>
     )
 }

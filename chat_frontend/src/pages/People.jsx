@@ -34,6 +34,7 @@ function People() {
 
     return (
         <div className='people-container'>
+            <h2 className="chat-history-header">Users</h2>
             {users?.map((person)=> {
                 return (
                     <Link

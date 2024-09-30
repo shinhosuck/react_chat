@@ -53,6 +53,50 @@ export async function fetchChatHistory(url, token){
     return data
 }
 
+export async function updateCommunityRoom(url, body, token) {
+    try {
+        const resp = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            body: JSON.stringify(body)
+        })
+        const data = await resp.json()
+        if (resp.ok) {
+            return data 
+        }
+        else {
+            throw new Error(data.error)
+        }
+    } catch (error) {
+        return {error:error.message}
+    }
+}
+
+export async function removeUserFromChatRoom(url, token) {
+    try {
+        const resp = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+        })
+        const data = await resp.json()
+        if (resp.ok) {
+            return data
+        }
+        else {
+            throw new Error(data.error)
+        }
+    } catch (error) {
+        return {error:error.message}
+    }
+
+}
+
 // User authentication
 
 export async function userRegister(url, body) {

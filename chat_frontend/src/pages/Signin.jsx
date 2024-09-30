@@ -1,8 +1,15 @@
+import { 
+    Link, 
+    useNavigate, 
+    useLocation, 
+    useOutletContext, 
+    Navigate 
+} from 'react-router-dom'
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import { Link, useNavigate, useLocation, useOutletContext, Navigate } from 'react-router-dom'
 import { URL, userLogin } from '../utils/api'
 import { RootLayOutContext } from '../layouts/RootLayout'
 import { validateAuthForm } from "../utils/authenticate";
+import { updateChatSession } from '../utils/updateChatRoom'
 
 const url = `${URL}/api/auth/login/`
 
@@ -16,18 +23,32 @@ function Signin() {
     const navigate = useNavigate()
     const { state } = useLocation()
     
-
     async function handleSubmit(event) {
         event.preventDefault()
         const resp = await validateAuthForm('login',user)
+
         if (resp?.message === 'valid') {
             const data = await userLogin(url, user)
             if (data.error) {
                 setBackendError(data)
-            }else {
-                setUserAuth(data)
-                sessionStorage.setItem('user', JSON.stringify(data))
-                navigate('/chat-rooms', {replace:true, state:{message:data.message}})
+            }
+            else {
+                const update = await updateChatSession({
+                    username:data.user,
+                    token:data.token
+                })
+                if (update?.error) {
+                   setErrorOrMessage(update)
+                }
+                else {
+                    setUserAuth(data)
+                    sessionStorage.setItem('user', JSON.stringify(data))
+                    navigate(
+                        '/chat-rooms', 
+                        {replace:true, 
+                        state:{message:data.message}}
+                    )
+                }
             }
         }
         else {
@@ -41,7 +62,7 @@ function Signin() {
     function handleChange(event) {
         const {name, value} = event.target 
         const emptyFields = formError?.emptyFields
-        
+
         if (emptyFields?.includes(name)) {
             if (!emptyFields.length) {
                 setFormError(null)
@@ -77,6 +98,7 @@ function Signin() {
     }, [])
 
     if (userAuth) {
+        console.log(userAuth)
         return (
             <Navigate 
                 to='/chat-rooms' 

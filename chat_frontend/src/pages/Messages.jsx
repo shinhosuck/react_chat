@@ -5,6 +5,7 @@ import {  RootLayOutContext } from "../layouts/RootLayout"
 import avatar from '../images/avatar.png'
 import { formatDate } from '../utils/formatDate'
 import { createMessageElement } from "../utils/createElement"
+import { updateChatRoom } from "../utils/updateChatRoom"
 
 const url = `${URL}/api/messages/`
 
@@ -14,7 +15,6 @@ function Messages() {
     const [messages, setMessages] = useState(null);
     const [isLoading, setIsLoading] = useState(true)
     const { userAuth, setUserAuth } = useContext(RootLayOutContext)
-    // const [showMessageModal, setShowMessageModal] = useState({id:''})
     const messageRef = useRef()
     const { state } = useLocation()
 
@@ -43,11 +43,6 @@ function Messages() {
     }
 
     function handleWebSocket() {
-        const type = state?.community && 
-        state.community || 
-        state?.user && state.user
-        type && sessionStorage.setItem('chatType', type)
-
         let ws = new WebSocket(wsocketURL);
 
         newMessage && ws.addEventListener("open", (event) => {
@@ -57,7 +52,6 @@ function Messages() {
 
         ws.addEventListener("message", (event) => {
             const data = JSON.parse(event.data);
-            console.log(data)
             if (data?.message) {
                 setResponseMessage(data)
             }
@@ -94,7 +88,6 @@ function Messages() {
             const url = state?.community && `${URL}/api/community/${state.community}` ||
             state?.user && `${URL}/api/user/${state.user}`
             const data = await fetchMessages(url, userAuth.token)
-            console.log(data)
             setMessages(data)
             setIsLoading(false)
        }
@@ -108,9 +101,19 @@ function Messages() {
     }, [responseMessage])
 
     useEffect(()=> {
-        const chatType = sessionStorage.getItem('chatType')
-        const stateValue = state?.user && state.user ||
-        state?.community && state.community 
+        async function updateRoom() {
+            const data = await updateChatRoom(
+                state, 
+                userAuth
+            )
+            if (data.message) {
+                console.log(data.message)
+            }
+            else {
+                console.log(data.error)
+            }
+        }
+        updateRoom()
         handleWebSocket()
     }, [newMessage])
 
@@ -140,27 +143,31 @@ function Messages() {
     return (
         <div className='chat-message-container'>
             <div className='chat-message-row'>
-                <Link 
-                    state={{...state}}
-                    className="chat-message-redirect-link" 
-                    to={`${state?.redirectPath && state.redirectPath}`}
-                >
-                    <span className='chat-message-arrow-left'>
-                        <i className="fas fa-arrow-left"></i>
-                    </span>
-                </Link>
-                <div className='chat-message-profile-container'>
-                    <div className='chat-message-profile-img'>
-                        {state?.user && <img src={state.avatar_url} alt="" /> ||
-                            state?.community && 
-                            <img src={state.logo_url} alt="community_logo" />
-                        }
+                <div className="chat-message-back-ellipsis-btn">
+                    <div className="chat-message-back-btn">
+                        <Link 
+                            state={{...state}}
+                            className="chat-message-redirect-link" 
+                            to={`${state?.redirectPath && state.redirectPath}`}
+                        >
+                            <span className='chat-message-arrow-left'>
+                                <i className="fas fa-arrow-left"></i>
+                            </span>
+                        </Link>
+                        <div className='chat-message-profile-container'>
+                            <div className='chat-message-profile-img'>
+                                {state?.user && <img src={state.avatar_url} alt="" /> ||
+                                    state?.community && 
+                                    <img src={state.logo_url} alt="community_logo" />
+                                }
+                            </div>
+                            <p className='chat-message-profile-user'>{state?.user && state.user || state?.community && state.community}</p>
+                        </div>
                     </div>
-                    <p className='chat-message-profile-user'>{state?.user && state.user || state?.community && state.community}</p>
+                    <button className="chat-message-ellipsis">
+                        <i className="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
                 </div>
-                <button className="chat-message-ellipsis">
-                    <i className="fa-solid fa-ellipsis"></i>
-                </button>
             </div>
             <div className="chat-box">
                 <div className='chats'>
@@ -193,18 +200,12 @@ function Messages() {
                                     <React.Fragment key={message.id}>
                                         {message.message && 
                                             <div
-                                                // onClick={()=> setShowMessageModal({id:message.id})}
                                                 key={message.id} 
                                                 className='my-message chat-message'
                                             >
                                                 <p className='chat'>
                                                     <span>{message.message}</span>
                                                 </p>
-                                                {/* {showMessageModal.id === message.id &&
-                                                    <div className='my-message-modal'>
-                                                        <button><i className="fas fa-times"></i></button>
-                                                    </div>
-                                                } */}
                                             </div>
                                         }
                                         {message.other_user_message && 

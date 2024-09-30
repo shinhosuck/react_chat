@@ -75,35 +75,37 @@ function ChatRoom() {
                 </div>
             }
             <div className="chat-room-container">
-                <div className="chat-room-icons-row">
-                    <NavLink
-                        to="." 
-                        end={true}
-                        className={({isActive})=>isActive?
-                            'chat-room-icon active-chat-room':
-                            'chat-room-icon'}
-                    >
-                        <i className="fa-solid fa-message"></i>
-                        <p>Chats</p>
-                    </NavLink>
-                     <NavLink
-                        to="communities"
-                        className={({isActive})=>isActive?
-                            'chat-room-icon active-chat-room':
-                            'chat-room-icon'}
-                    >
-                        <i className="fa-solid fa-city"></i>
-                        <p>Communities</p>
-                    </NavLink>
-                    <NavLink
-                        to="people"
-                        className={({isActive})=>isActive?
-                            'chat-room-icon active-chat-room':
-                            'chat-room-icon'}
-                    >
-                        <i className="fa-solid fa-users"></i>
-                        <p>People</p>
-                    </NavLink>
+                <div className="chat-room-icons-container">
+                    <div className="chat-room-icons-row">
+                        <NavLink
+                            to="." 
+                            end={true}
+                            className={({isActive})=>isActive?
+                                'chat-room-icon active-chat-room':
+                                'chat-room-icon'}
+                        >
+                            <i className="fa-solid fa-message"></i>
+                            <p>Chats</p>
+                        </NavLink>
+                        <NavLink
+                            to="communities"
+                            className={({isActive})=>isActive?
+                                'chat-room-icon active-chat-room':
+                                'chat-room-icon'}
+                        >
+                            <i className="fa-solid fa-city"></i>
+                            <p>Communities</p>
+                        </NavLink>
+                        <NavLink
+                            to="people"
+                            className={({isActive})=>isActive?
+                                'chat-room-icon active-chat-room':
+                                'chat-room-icon'}
+                        >
+                            <i className="fa-solid fa-users"></i>
+                            <p>People</p>
+                        </NavLink>
+                    </div>
                 </div>
                 <Outlet />
             </div>
