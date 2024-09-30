@@ -1,5 +1,7 @@
 
-export const URL = "http://127.0.0.1:8000"
+export const URL = window.location.hostname === 'localhost'?
+"http://127.0.0.1:8000" : "https://dj-react-chat.vercel.app";
+
 export const wsURL = "ws://127.0.0.1:8000";
 
 export async function fetchChatRoomCommunities(url) {
